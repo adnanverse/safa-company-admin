@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.colour >svg:first-child{
+  width: 15px;
+}
+.social >svg:first-child{
+  width: 15px;
+}
+.material >svg:first-child{
+  width: 18px;
+}
