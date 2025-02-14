@@ -9,6 +9,7 @@ export default function Context({ children }) {
     let [token, settoken] = useState(localStorage.getItem('token'))
     let [companyProfileDetails, setcompanyProfileDetails] = useState('')
     let[companyProfilerender,setcompanyProfilerender]=useState(true)
+	
     
     useEffect(()=>{
 		axios.post('http://localhost:5556/api/admin/profile/detail','',{

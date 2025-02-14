@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import Select from 'react-select'
+import { MdDelete } from "react-icons/md";
 export default function AddProduct() {
 
     let params = useParams();
@@ -18,10 +19,29 @@ export default function AddProduct() {
     let [SelectedAnimationImage, setSelectedAnimationImage] = useState('')
     let [SelectedProductImage, setSelectedProductImage] = useState('')
     let [productdetails, setproductdetails] = useState({})
-    let [multipleImages, setmultipleImages] = useState([])
+    let [productBaseUrl, setproductBaseUrl] = useState('')
+    let [SelectedMultipleImages, setSelectedMultipleImages] = useState([])
+    let [ProductImages, setProductImages] = useState([])
     let [material, setMaterial] = useState([])
 
+    //PRODUCT GALLERY IMAGE DELETE API -----------------------------------------------------------------------------------------------
+    let DeleteImage=(id)=>{
+        axios.post('http://localhost:5556/api/admin/products/delete-images', {
+        id:id
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            },
 
+        })
+            .then((response) => {
+                toast.success('images deleted successfully')
+                setrender(!render)
+            })
+            .catch((error) => {
+                toast.error('something went wrong')
+            })
+    }
 
 
     // FUNCTION FOR SET SUB CATEGORY ACCORDING TO MAIN CATEGORY ---------------------------------------------------------------------------------->>>>>>>
@@ -47,7 +67,7 @@ export default function AddProduct() {
     // FUNCTION FOR SET SUB SUB CATEGORY ACCORDING TO SUB CATEGORY ---------------------------------------------------------------------------------->>>>>>>
     let GetSubSubCategory = (event) => {
 
-    
+
         axios.post('http://localhost:5556/api/admin/sub-sub-categories', {
             //   page:currentPage,
             limit: 200,
@@ -81,6 +101,7 @@ export default function AddProduct() {
 
                 }).then((response) => {
                     setproductdetails(response.data.data)
+                    setproductBaseUrl(response.data.base_url)
                     console.log(response.data.data)
                     setselectedsizes(
                         (response.data.data.size_ids.length > 0)
@@ -111,22 +132,22 @@ export default function AddProduct() {
                     toast.error('something went wrong')
                 })
 
-                axios.post(`http://localhost:5556/api/admin/products/product-images`,{
-                    product_id: params.id
-                  },
-                    {
-                      headers: {
+            axios.post(`http://localhost:5556/api/admin/products/product-images`, {
+                product_id: params.id
+            },
+                {
+                    headers: {
                         Authorization: `Bearer ${token}`
-                      },
-              
-                    }).then((response) => {
+                    },
 
-                      console.log(response.data.data)
-                      setmultipleImages(response.data.data)
-                    })
-                    .catch((error) => {
-                      toast.error('something went wrong')
-                    })
+                }).then((response) => {
+
+                    console.log(response.data.data)
+                    setProductImages(response.data.data)
+                })
+                .catch((error) => {
+                    toast.error('something went wrong')
+                })
 
             GetSubCategory('');
             GetSubSubCategory('');
@@ -134,18 +155,14 @@ export default function AddProduct() {
             setproductdetails({})
             setselectedcolors([])
             setselectedsizes([])
+            setProductImages([])
 
         }
 
-    }, [params])
+    }, [params,render])
 
 
-    //PRODUCT IMAGES API -------------------------------------------------------------------------->>>>
-    useEffect(() => {
-        if (params.id != null) {
-            
-        }
-    }, [])
+  
 
 
     // READ IMAGE FROM INPUT TYPE FILE ------------------------>>>>>>>>>>>>>
@@ -185,7 +202,7 @@ export default function AddProduct() {
 
                     // When all files are processed, update the state
                     if (imagesArray.length === files.length) {
-                        setmultipleImages(imagesArray);
+                        setSelectedMultipleImages(imagesArray);
                         console.log(imagesArray);
                     }
                 };
@@ -372,13 +389,16 @@ export default function AddProduct() {
                                 {
                                     (params.id != null) ? 'Update Product' : ' Add Product'
                                 }
-                            </span></div>
+                            </span>
+                            </div>
                         </li>
                     </ol>
                 </nav>
                 <div class="w-full min-h-[610px]">
                     <div class="max-w-[1220px] mx-auto py-5">
-                        <h3 class="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">Add Product </h3>
+                        <h3 class="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400"> {
+                            (params.id != null) ? 'Update Product' : ' Add Product'
+                        }</h3>
                         <form onSubmit={formHandle} class="border border-t-0 p-3 rounded-b-md border-slate-400">
                             <div class="mb-5">
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900">Select Parent Category</label>
@@ -502,7 +522,7 @@ export default function AddProduct() {
                                 <textarea
                                     name="description"
                                     id="message"
-                                    defaultValue={productdetails.description}
+                                    defaultValue={(productdetails!=null) ?productdetails.description : ''}
                                     rows="3"
                                     class="resize-none block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Add Product Description....."
@@ -512,7 +532,7 @@ export default function AddProduct() {
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900">Short Description</label>
                                 <textarea
                                     name="short_description"
-                                    defaultValue={productdetails.short_description}
+                                    defaultValue={(productdetails!=null) ?productdetails.short_description:''}
                                     id="message"
 
                                     rows="3"
@@ -619,16 +639,36 @@ export default function AddProduct() {
                             </div>
                             <div class="mb-5 p-5 border rounded-lg grid gap-3 grid-cols-4">
                                 {
-                                    multipleImages.map((v, i) => {
-                                        return (
-                                            <div className='border p-3 relative'>
-                                                <div className=' absolute top-2 right-2  rounded-lg'>
-                                                    hello
+                                    (ProductImages.length > 0)
+                                        ?
+
+                                        ProductImages.map((v, i) => {
+                                            return (
+                                                <div className='border p-3 relative'>
+                                                    <div onClick={()=>DeleteImage(v._id)} className=' absolute top-4 text-[25px] bg-white text-[red] right-4 p-1 cursor-pointer rounded-full'>
+                                                        <MdDelete />
+                                                    </div>
+                                                    <img src={productBaseUrl + '/' + v.image} className='w-[100%]' alt="" />
                                                 </div>
-                                                <img src={v} className='w-[100%]' alt="" />
-                                            </div>
-                                        )
-                                    })
+                                            )
+                                        })
+                                        :
+                                        ''
+                                }
+                                {
+
+                                    (SelectedMultipleImages.length > 0)
+                                        ?
+                                        SelectedMultipleImages.map((v, i) => {
+                                            return (
+                                                <div className='border p-3 relative'>
+
+                                                    <img src={v} className='w-[100%]' alt="" />
+                                                </div>
+                                            )
+                                        })
+                                        :
+                                        ''
                                 }
 
                             </div>

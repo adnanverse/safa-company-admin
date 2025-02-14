@@ -25,7 +25,12 @@ export default function Sidebars() {
             <aside id="separator-sidebar" class="  overflow-hidden w-64 h-screen basis-[23%] transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <Sidebar class="h-full px-3  overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <div class="flex pb-2 items-center  text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <img src={(companyProfileDetails.sub_logo!=null)?companyProfilebaseurl+'/'+companyProfileDetails.sub_logo : '/images/nullimage.jpg' } class="w-6 me-3 " alt="Flowbite Logo" />
+                        <img src={
+                            (companyProfileDetails!='')?
+                            ((companyProfileDetails.sub_logo!=null)?companyProfilebaseurl+'/'+companyProfileDetails.sub_logo : '/images/nullimage.jpg')
+                            :
+                            '/images/nullimage.jpg'
+                             } class="w-6 me-3 " alt="Flowbite Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Safa Company</span>
                     </div>
                     <ul class="space-y-2 font-medium">

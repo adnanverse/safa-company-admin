@@ -11,8 +11,9 @@ export default function Login() {
     event.preventDefault();
     axios.post('http://localhost:5556/api/admin/login',event.target)
     .then((response)=>{
-      setrender(!render)
       setcompanyProfilerender(!companyProfilerender)
+      setrender(!render)
+      
       navigation('/dashboard')
         localStorage.setItem('token',response.data.token)
     }).catch((error)=>{
