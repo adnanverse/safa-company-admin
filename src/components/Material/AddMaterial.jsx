@@ -5,10 +5,13 @@ import { toast } from 'react-toastify';
 
 export default function AddMaterial() {
     let params= useParams();
+    let navigation = useNavigate();
+    let [render,setrender]=useState(true)
     let [materialDetail,setmaterialDetail]=useState('')
     let   [token ,settoken]=useState(localStorage.getItem('token'))
     useEffect(()=>{
-        if(params.id!=null){
+        console.log(params.id)
+        if(params.id!=undefined){
             axios.post(`http://localhost:5556/api/admin/material/details/${params.id}`,'',{
                 headers:{
                     Authorization:`Bearer ${token}` 
@@ -16,13 +19,20 @@ export default function AddMaterial() {
                 
             })
             .then((response)=>{
-                setmaterialDetail(response.data.data)
+                if(response.data.tokenstatus!=false){
+                    setmaterialDetail(response.data.data)
+                }else{
+                    navigation('/')
+                }
+                
             })
             .catch((error)=>{
                     toast.error('something went wrong ')
             })
+        }else{
+            setmaterialDetail('')
         }
-    },[params])
+    },[params,render])
    
     let formhandler=(event)=>{
         event.preventDefault();
@@ -34,15 +44,16 @@ export default function AddMaterial() {
                 
             })
               .then((response)=>{
-                if(response.data.status==true){
+                if(response.data.tokenstatus!=false){
                     toast.success(response.data.message)
+                    setrender(!render)
                    
                 }else{
                     toast.error(response.data.message)
                 }
     })
     .catch((error)=>{
-            alert('something went wrong')
+            toast.error('something went wrong')
     })
         }else{
             axios.post('http://localhost:5556/api/admin/material/add',event.target,{

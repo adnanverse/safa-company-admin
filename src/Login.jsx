@@ -5,21 +5,25 @@ import { toast } from 'react-toastify';
 import { CommonContext } from './components/context/Context';
 
 export default function Login() {
-  let {render,setrender,setcompanyProfilerender,companyProfilerender}= useContext(CommonContext)
+  let { render, setrender, setcompanyProfilerender, companyProfilerender } = useContext(CommonContext)
   let navigation = useNavigate();
   let formhandle = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:5556/api/admin/login',event.target)
-    .then((response)=>{
-      setcompanyProfilerender(!companyProfilerender)
-      setrender(!render)
-      
-      navigation('/dashboard')
-        localStorage.setItem('token',response.data.token)
-    }).catch((error)=>{
+    axios.post('http://localhost:5556/api/admin/login', event.target)
+      .then((response) => {
+        if(response.data.status==true){
+          setcompanyProfilerender(!companyProfilerender)
+          setrender(!render)
+          navigation('/dashboard')
+          localStorage.setItem('token', response.data.token)
+        }else{
+          toast.error(response.data.message)
+        }
+       
+      }).catch((error) => {
         toast.error('someting went wrong !!!!')
-    })
-    
+      })
+
   }
 
 
@@ -27,7 +31,7 @@ export default function Login() {
     < >
       <div className=' absolute translate-x-[50%] right-[50%] bottom-[50%] translate-y-[50%]'>
         <h1 className='text-[30px] text-center font-bold py-4'>
-          Frank And Oaks
+         Safa Company
         </h1>
 
         <form onSubmit={formhandle} class="max-w-sm mx-auto border p-7 rounded-lg">

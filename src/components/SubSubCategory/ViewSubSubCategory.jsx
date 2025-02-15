@@ -2,7 +2,7 @@
 import axios, { toFormData } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Pagination } from "flowbite-react";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 export default function ViewSubSubCategory() {
     let [subSubcategory, setSubSubcategory] = useState([])
@@ -12,7 +12,7 @@ export default function ViewSubSubCategory() {
     let [render, setrender] = useState(true)
     let [checkedvalue, setcheckedvalue] = useState([])
     let [token, settoken] = useState(localStorage.getItem('token'))
-
+    let navigation = useNavigate();
 
     useEffect(() => {
         axios.post('http://localhost:5556/api/admin/sub-sub-categories', {
@@ -24,8 +24,12 @@ export default function ViewSubSubCategory() {
             }
         })
             .then((response) => {
+              if(response.data.tokenstatus!=false){
                 setimageurl(response.data.base_url)
                 setSubSubcategory(response.data.data)
+              }else{
+                navigation('/')
+              }
             })
             .catch((error) => {
                 toast.error('something went wrong')
@@ -79,14 +83,15 @@ export default function ViewSubSubCategory() {
 
                 })
                     .then((response) => {
-                        if (response.data.status == true) {
+                        if (response.data.tokenstatus !=false) {
                             setcheckedvalue([])
+                            toast.success('Record Deleted Sucessfully')
                             setrender(!render)
                         } else {
-                            alert('something went wrong')
+                            navigation('/')
                         }
                     }).catch((error) => {
-
+                      toast.error('Something Went Wrong')
                     })
             }
         }
@@ -103,14 +108,15 @@ export default function ViewSubSubCategory() {
 
         })
             .then((response) => {
-                if (response.data.status == true) {
+                if (response.data.tokenstatus != false) {
                     setcheckedvalue([])
+                    toast.success('Status Change Successfully')
                     setrender(!render)
                 } else {
-                    alert('something went wrong')
+                   navigation('/')
                 }
             }).catch((error) => {
-
+                toast.error('Something went wrong')
             })
     }
     return (

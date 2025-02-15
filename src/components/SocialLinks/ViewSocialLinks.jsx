@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { Pagination } from "flowbite-react";
 import axios, { toFormData } from 'axios'
@@ -13,6 +13,8 @@ export default function ViewSocialLinks() {
   let   [render, setrender] = useState(true)
   let   [checkedvalue, setcheckedvalue] = useState([])
   let   [token ,settoken]=useState(localStorage.getItem('token'))
+  let navigation = useNavigate();
+
   useEffect(() => {
     axios.post('http://localhost:5556/api/admin/social-links', {
       page: currentPage,
@@ -23,9 +25,12 @@ export default function ViewSocialLinks() {
       }
     })
       .then((response) => {
-        console.log(response.data.base_url)
+        if(response.data.tokenstatus!==false){
         setimageurl(response.data.base_url)
         setsocialLinks(response.data.data)
+        }else{
+          navigation('/')
+        }
       })
       .catch((error) => {
         toast.error('Something went wrong !!')
@@ -76,11 +81,11 @@ export default function ViewSocialLinks() {
           
       })
           .then((response) => {
-            if (response.data.status == true) {
+            if(response.data.tokenstatus!==false){
               setcheckedvalue([])
               setrender(!render)
             } else {
-              toast.error('something went wrong')
+             navigation('/')
             }
           }).catch((error) => {
             toast.error('something went wrong !!!')
@@ -99,11 +104,12 @@ export default function ViewSocialLinks() {
       },
       
   }).then((response) => {
-        if (response.data.status == true) {
+    if(response.data.tokenstatus!==false){
           setcheckedvalue([])
+          toast.success('Status change successfully')
           setrender(!render)
         } else {
-          toast.error('something went wrong')
+          navigation('/')
         }
       }).catch((error) => {
         toast.error('something went wrong !!!')

@@ -1,6 +1,7 @@
 import axios, { toFormData } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export default function AddCategory() {
     const params = useParams();
@@ -17,8 +18,10 @@ export default function AddCategory() {
                 
             })
             .then((response)=>{
-                    if(response.data.status==true){
+                    if(response.data.tokenstatus!=false){
                             setCatDetails(response.data.data)
+                    }else{
+                        navigation('/')
                     }
             }).catch((error)=>{
                 alert('something went wrong')
@@ -37,13 +40,11 @@ export default function AddCategory() {
                 
             } )
             .then((response)=>{
-                        if(response.data.status==true){
-                            // alert(response.data.message)
-                            navigation(`/parent-category/update/${params.id}`)
-                           
-                        }else{
-                            alert(response.data.message)
-                        }
+                if(response.data.tokenstatus!=false){
+                    toast.success('Category updated successfully')
+            }else{
+                navigation('/')
+            }
             })
             .catch((error)=>{
                     alert('something went wrong')
@@ -56,15 +57,15 @@ export default function AddCategory() {
                 
             })
             .then((response)=>{
-                        if(response.data.status==true){
-                            // alert(response.data.message)
+                        if(response.data.tokenstatus!=false){
+                            toast.success('Category added Successfully')
                             event.target.reset();
                         }else{
-                            // alert(response.data.message)
+                            navigation('/')
                         }
             })
             .catch((error)=>{
-                    alert('something went wrong')
+                    toast.error('something went wrong')
             })
         }
        

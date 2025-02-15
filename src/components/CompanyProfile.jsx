@@ -3,13 +3,14 @@ import { CommonContext } from './context/Context'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { IoAddSharp } from "react-icons/io5";
+import { useNavigate } from 'react-router-dom';
 
 export default function CompanyProfile() {
     let { companyProfilerender, setcompanyProfilerender, companyProfileDetails, companyProfilebaseurl } = useContext(CommonContext)
     let [token, settoken] = useState(localStorage.getItem('token'))
     let [SelectedLogo, setSelectedLogo] = useState('')
     let [SelectedSubLogo, setSelectedSubLogo] = useState('')
-
+    let navigation = useNavigate()
 
     let handleimagechange = (event) => {
         if (event.target.id == 'logo') {
@@ -46,13 +47,18 @@ export default function CompanyProfile() {
 
         })
             .then((response) => {
+                if(response.data.tokenstatus!=false){
                 setcompanyProfilerender(!companyProfilerender)
-
+                toast.success('Company Profile Updated Successfully !!')
+                }else{
+                    navigation('/')
+                }
             })
             .catch((error) => {
                 toast.error('something went wrong')
             })
     }
+
     return (
         <div>
             <div class="w-full">

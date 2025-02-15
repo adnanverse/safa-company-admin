@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { FaFilter } from "react-icons/fa6";
 import { MdOutlineClose } from "react-icons/md";
 import { Pagination, Toast } from "flowbite-react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import DetailProductPopUp from './DetailProductPopUp';
 import { TbListDetails } from "react-icons/tb";
@@ -25,6 +25,7 @@ export default function ViewProduct() {
   let [productImages, setproductImages] = useState([])
   let [baseUrl, setbaseUrl] = useState('')
   let [material, setMaterial] = useState([])
+  let navigation = useNavigate()
 
 
   let GetProductId = (id) => {
@@ -35,7 +36,11 @@ export default function ViewProduct() {
         },
 
       }).then((response) => {
+        if(response.data.tokenstatus!=false){
         setproductdetails(response.data.data)
+        }else{
+          navigation('/')
+        }
       })
       .catch((error) => {
         toast.error('something went wrong')
@@ -76,7 +81,11 @@ export default function ViewProduct() {
 
     })
       .then((response) => {
+        if(response.data.tokenstatus!=false){
         setsubcategory(response.data.data)
+        }else{
+          navigation('/')
+        }
       })
       .catch((error) => {
         toast.error('something went wrong')
@@ -94,10 +103,14 @@ let GetSubCategoryid=(event)=>{
 
 })
     .then((response) => {
+      if(response.data.tokenstatus!=false){
         setsubsubcategory(response.data.data)
+      }else{
+        navigation('/')
+      }
     })
     .catch((error) => {
-        alert('something went wrong')
+        toast.error('something went wrong')
     })
 }
 
@@ -115,10 +128,12 @@ let GetSubCategoryid=(event)=>{
     }
     )
       .then((response) => {
-        console.log(response.data)
+        if(response.data.tokenstatus!=false){
         setbaseUrl(response.data.base_url)
-        // setimageurl(response.data.base_url)
         setproducts(response.data.data)
+        }else{
+          navigation('/')
+        }
 
       })
       .catch((error) => {
@@ -136,10 +151,11 @@ let GetSubCategoryid=(event)=>{
 
     })
       .then((response) => {
-        // setimageurl(response.data.base_url)
-        // setrender(!render)
+        if(response.data.tokenstatus!=false){
         setproducts(response.data.data)
-        console.log(products)
+      }else{
+        navigation('/')
+      }
 
       })
       .catch((error) => {
@@ -191,12 +207,12 @@ let GetSubCategoryid=(event)=>{
 
         })
           .then((response) => {
-            if (response.data.status == true) {
+            if(response.data.tokenstatus!=false){
               setcheckedvalue([])
               setrender(!render)
               toast.success('Product deleted Successfully !!')
             } else {
-              toast.error('Something went wrong !!')
+              navigation('/')
             }
           }).catch((error) => {
 
@@ -217,7 +233,11 @@ let GetSubCategoryid=(event)=>{
         },
 
     }).then((response) => {
+      if(response.data.tokenstatus!=false){
         setMaterial(response.data.data)
+      }else{
+        navigation('/')
+      }
 
     }).catch((error) => {
         toast.error('Something went wrong !!')
@@ -235,12 +255,12 @@ let GetSubCategoryid=(event)=>{
 
     })
       .then((response) => {
-        if (response.data.status == true) {
+        if(response.data.tokenstatus!=false){
           toast.success('Status Changed Successsfully !!')
           setcheckedvalue([])
           setrender(!render)
         } else {
-          toast.error('Something went wrong !!')
+          navigation('/')
         }
       }).catch((error) => {
         toast.error('Something went wrong !!')
@@ -259,9 +279,14 @@ let GetSubCategoryid=(event)=>{
       },
 
     }).then((response) => {
+      if(response.data.tokenstatus!=false){
       SetCategories(response.data.data)
+
+      }else{
+        navigation('/')
+      }
     }).catch((error) => {
-      console.log('something went wrong')
+      toast.error('something went wrong')
     })
   }, [])
 
@@ -278,7 +303,11 @@ let GetSubCategoryid=(event)=>{
 
     })
       .then((response) => {
+        if(response.data.tokenstatus!=false){
         setsize(response.data.data)
+        }else{
+          navigation('/')
+        }
 
       })
       .catch((error) => {
@@ -297,7 +326,11 @@ let GetSubCategoryid=(event)=>{
 
     })
       .then((response) => {
+        if(response.data.tokenstatus!=false){
         setcolor(response.data.data)
+        }else{
+          navigation('/')
+        }
       }).catch((error) => {
         toast.error('something went wrong ')
       })

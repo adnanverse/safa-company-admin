@@ -2,11 +2,14 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-toastify'
 import { CommonContext } from './context/Context.jsx'
+import { useNavigate } from 'react-router-dom'
 
 export default function ProfileUser({}) {
 	let {userdetails,baseurl,render,setrender}=useContext(CommonContext)
 	let [token, settoken] = useState(localStorage.getItem('token'))
 	let [SelectedProfileImage,setSelectedProfileImage]=useState('')
+	let navigation = useNavigate()
+	
 
 	let handleimagechange=(event)=>{
 		const file = event.target.files[0];
@@ -31,9 +34,13 @@ export default function ProfileUser({}) {
 	
 		  })
 				.then((response) => {
+					if(response.data.tokenstatus!=false){
 					toast.success('Profile Updated Successfully')
 					setrender(!render)
 					event.target.reset();
+					}else{
+						navigation('/')
+					}
 				})
 				.catch((error) => {
 					 toast.error('something went wrong')
@@ -45,6 +52,7 @@ export default function ProfileUser({}) {
 
 
 	}
+
 	return (
 		<>
 			<div class="w-full">

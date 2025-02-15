@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function AddSubSubCategory() {
@@ -11,6 +11,7 @@ export default function AddSubSubCategory() {
     let [imageurl, setimageurl] = useState('')
     let [subcategory, setsubcategory] = useState([])
     let [token, settoken] = useState(localStorage.getItem('token'))
+    let navigation = useNavigate()
 
     let formhandler = (event) => {
         event.preventDefault();
@@ -22,19 +23,18 @@ export default function AddSubSubCategory() {
 
             })
                 .then((response) => {
-                    if (response.data.status == true) {
-                        // navigation(`/parent-category/update/${params.id}`)
+                    if (response.data.tokenstatus != false) {
+                        toast.success('Record updated successfully !!')
                         setrender(!render)
 
                     } else {
-                        alert(response.data.message)
+                        navigation('/')
                     }
                 })
                 .catch(() => {
-                    alert('something went wrong')
+                    toast.error('something went wrong')
                 })
         } else {
-            console.log(event.target)
             axios.post('http://localhost:5556/api/admin/sub-sub-categories/add', event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -42,11 +42,11 @@ export default function AddSubSubCategory() {
 
             })
                 .then((response) => {
-                    if (response.data.status == true) {
+                    if (response.data.tokenstatus != false) {
                         toast.success(response.data.message)
                         event.target.reset();
                     } else {
-                        toast.error('false')
+                       navigation('/')
 
                     }
                 })
@@ -55,6 +55,8 @@ export default function AddSubSubCategory() {
                 })
         }
     }
+
+    
     useEffect(() => {
         axios.post('http://localhost:5556/api/admin/categories', {
             page: 1,
@@ -73,6 +75,8 @@ export default function AddSubSubCategory() {
                 alert('something went wrong')
             })
     }, [render])
+
+    
     useEffect(() => {
         axios.post(`http://localhost:5556/api/admin/sub-categories/detail/${params.id}`, '', {
             headers: {

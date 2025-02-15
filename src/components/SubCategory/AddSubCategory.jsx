@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export default function AddSubCategory() {
     let params = useParams();
@@ -9,6 +10,8 @@ export default function AddSubCategory() {
     let [render, setrender] = useState(true)
     let [imageurl, setimageurl] = useState('')
     let [token, settoken] = useState(localStorage.getItem('token'))
+    let navigation = useNavigate()
+
     let formhandler = (event) => {
         event.preventDefault();
         if (params.id != null) {
@@ -19,19 +22,18 @@ export default function AddSubCategory() {
 
             })
                 .then((response) => {
-                    if (response.data.status == true) {
-                        // navigation(`/parent-category/update/${params.id}`)
+                    if(response.data.tokenstatus!=false){
+                        toast.success('Record Updated successfully')
                         setrender(!render)
 
                     } else {
-                        alert(response.data.message)
+                        navigation('/')
                     }
                 })
                 .catch(() => {
-                    alert('something went wrong')
+                    toast.error('something went wrong')
                 })
         } else {
-            console.log(event.target)
             axios.post('http://localhost:5556/api/admin/sub-categories/add', event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -39,16 +41,16 @@ export default function AddSubCategory() {
 
             })
                 .then((response) => {
-                    if (response.data.status == true) {
-                        // alert(response.data.message)
+                    if(response.data.tokenstatus!=false){
+                        toast.success('Record added successfully')
                         event.target.reset();
                     } else {
-                        alert('false')
+                        navigation('/')
 
                     }
                 })
                 .catch(() => {
-                    alert('something went wrong')
+                    toast.error('something went wrong')
                 })
         }
     }
@@ -66,10 +68,14 @@ export default function AddSubCategory() {
 
         })
             .then((response) => {
+                if(response.data.tokenstatus!=false){
                 SetCategories(response.data.data)
+                }else{
+                    navigation('/')
+                }
             })
             .catch(() => {
-                alert('something went wrong')
+                toast.error('something went wrong')
             })
     }, [render])
 
@@ -84,14 +90,18 @@ export default function AddSubCategory() {
 
             })
                 .then((response) => {
+                    if(response.data.tokenstatus!=false){
                     setdetails(response.data.data)
                     setimageurl(response.data.base_url)
+                    }else{
+                        navigation('/')
+                    }
                 }).catch(() => {
-                    alert('something went wrong !!!')
+                    toast.error('something went wrong !!!')
                 })
         }
         
-    }, [params])
+    }, [params,render])
 
 
     return (

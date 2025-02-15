@@ -1,12 +1,13 @@
 import axios, { toFormData } from 'axios';
 import { Pagination } from "flowbite-react"
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function ViewCategory() {
     const [currentPage, setCurrentPage] = useState(1);
     const onPageChange = (page) => setCurrentPage(page);
+    let navigation = useNavigate();
     const [render,setrender]=useState(true)
      // checboxvalue this state contain all _ids ----------------------------------------->>>>>>
      let [checboxvalue, setcheckboxvalue] = useState([])
@@ -23,19 +24,20 @@ export default function ViewCategory() {
                 }
             })
             .then((response)=>{
-                    if(response.data.status==true){
+                    if(response.data.tokenstatus!=false){
                         setcheckboxvalue([])
                         toast.success("Record deleted successfully")
                         setrender(!render)
                     }else{  
-                        alert('something went wrong')
+                        navigation('/')
                     }
             }).catch((error)=>{
-
+                toast.error('Something went Wrong')
             })
         }
 
     }
+    
     let changeStatus=()=>{
         axios.post('http://localhost:5556/api/admin/categories/change-status',toFormData({
             id:checboxvalue,
@@ -46,16 +48,17 @@ export default function ViewCategory() {
             
         })
         .then((response)=>{
-                if(response.data.status==true){
+                if(response.data.tokenstatus!=false){
                     setcheckboxvalue([])
                     setrender(!render)
                 }else{
-                    alert('hello')
+                    navigation('/')
                 }
         }).catch((error)=>{
-            alert('something went wrong')
+            toast.error('something went wrong')
         })
     }
+
     let selectall = () => {
         //if categories ki length equal nhi h chechboxvalue keeeeeeee--------------------------->>>>>>>>>>>>
         if (Categories.length != checboxvalue.length) {
@@ -68,6 +71,8 @@ export default function ViewCategory() {
             setcheckboxvalue([])
         }
      }
+
+
     let SingleSelect = (id) => {
         if (checboxvalue.includes(id)) {
             let data = checboxvalue.filter((v, i) => {
@@ -93,8 +98,12 @@ export default function ViewCategory() {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then((response) => {
+           .then((response) => {
+            if(response.data.tokenstatus!=false){
                 SetCategories(response.data.data)
+            }else{
+                navigation('/')
+            }
             })
             .catch((error) => {
                 alert('something went wrong')

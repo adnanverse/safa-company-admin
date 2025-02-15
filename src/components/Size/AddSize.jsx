@@ -1,73 +1,79 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export default function AddSize() {
     let navigation = useNavigate()
-    let params= useParams();
-    let [SizeDetail,setSizeDetail]=useState('')
-    let   [token ,settoken]=useState(localStorage.getItem('token'))
-    useEffect(()=>{
-        if(params.id!=null){
-            axios.post(`http://localhost:5556/api/admin/size/detail/${params.id}`,'',{
-                headers:{
-                    Authorization:`Bearer ${token}` 
+    let [render, setrender] = useState(true)
+    let params = useParams();
+    let [SizeDetail, setSizeDetail] = useState('')
+    let [token, settoken] = useState(localStorage.getItem('token'))
+    useEffect(() => {
+        if (params.id != null) {
+            axios.post(`http://localhost:5556/api/admin/size/detail/${params.id}`, '', {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 },
-                
+
             })
-            .then((response)=>{
-                setSizeDetail(response.data.data)
-            })
-            .catch((error)=>{
-                    alert('something went wrong ')
-            })
+                .then((response) => {
+                    if (response.data.tokenstatus != false) {
+                        setSizeDetail(response.data.data)
+                    } else {
+                        navigation('/')
+                    }
+                })
+                .catch((error) => {
+                    toast.error('something went wrong ')
+                })
         }
-    },[params])
-   
-    let formhandler=(event)=>{
+    }, [params, render])
+
+    let formhandler = (event) => {
         event.preventDefault();
-        if(params.id!=null){
-              axios.put(`http://localhost:5556/api/admin/size/update/${params.id}`, event.target,{
-                headers:{
-                    Authorization:`Bearer ${token}` 
+        if (params.id != null) {
+            axios.put(`http://localhost:5556/api/admin/size/update/${params.id}`, event.target, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 },
-                
+
             })
-              .then((response)=>{
-                if(response.data.status==true){
-                    // alert(response.data.message)
-                    navigation(`/size/update/${params.id}`)
-                   
-                }else{
-                    alert(response.data.message)
-                }
-    })
-    .catch((error)=>{
-            alert('something went wrong')
-    })
-        }else{
-            axios.post('http://localhost:5556/api/admin/size/add',event.target,{
-                headers:{
-                    Authorization:`Bearer ${token}` 
+                .then((response) => {
+                    if (response.data.tokenstatus != false) {
+                        toast.success('Size updated successfully')
+
+                    } else {
+                        toast.error(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    toast.error('something went wrong')
+                })
+        } else {
+            axios.post('http://localhost:5556/api/admin/size/add', event.target, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 },
-                
+
             })
-            .then((response)=>{
-                        if(response.data.status==true){
-                            event.target.reset();
-                        }else{
-                            alert('something went wrong')
-                        }
-            })
-            .catch((error)=>{
-                alert('something went wrong')
-            })
+                .then((response) => {
+                    if (response.data.tokenstatus != false) {
+                        event.target.reset();
+                        toast.success('Size added successfully')
+                    } else {
+                        toast.error('something went wrong')
+                    }
+                })
+                .catch((error) => {
+                    toast.error('something went wrong')
+                })
         }
 
     }
-  return (
-    <>
-        <section class="w-full">
+    return (
+        <>
+            <section class="w-full">
                 <nav class="flex border-b-2" aria-label="Breadcrumb">
                     <ol class="p-3 px-6 inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center"><a href="#" class="inline-flex items-center text-md font-medium text-gray-700 hover:text-blue-600">Home</a></li>
@@ -76,31 +82,31 @@ export default function AddSize() {
                         </li>
                         <li aria-current="page">
                             <div class="flex items-center">/<span class="ms-1 text-md font-medium text-gray-500 md:ms-2">
-                            {
+                                {
                                     (params.id != null)
-                                    ?
-                                    'Update Size'
-                                    :
-                                    
-                                    'Add Size'
+                                        ?
+                                        'Update Size'
+                                        :
+
+                                        'Add Size'
                                 }
-                                </span></div>
+                            </span></div>
                         </li>
                     </ol>
                 </nav>
                 <div class="w-full min-h-[610px]">
                     <div class="max-w-[1220px] mx-auto py-5">
                         <h3 class="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
-                        {
-                                    (params.id != null)
+                            {
+                                (params.id != null)
                                     ?
                                     'Update Size'
                                     :
                                     'Add Size'
-                                } </h3>
-                        <form 
-                        onSubmit={formhandler}
-                         class="border border-t-0 p-3 rounded-b-md border-slate-400">
+                            } </h3>
+                        <form
+                            onSubmit={formhandler}
+                            class="border border-t-0 p-3 rounded-b-md border-slate-400">
                             <div class="mb-5">
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900"> Name</label>
                                 <input
@@ -123,10 +129,10 @@ export default function AddSize() {
                                     placeholder="order"
                                 />
                             </div>
-                            
-                            
-                            
-                            
+
+
+
+
                             <button
                                 type="submit"
                                 class="focus:outline-none my-10 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
@@ -136,7 +142,7 @@ export default function AddSize() {
                         </form>
                     </div>
                 </div>
-            </section>    
-    </>
-  )
+            </section>
+        </>
+    )
 }

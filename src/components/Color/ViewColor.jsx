@@ -1,18 +1,18 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Pagination } from "flowbite-react";
+import { toast } from 'react-toastify';
 export default function ViewColor() {
     let [color, setcolor] = useState([])
-    
-    let [token ,settoken]=useState(localStorage.getItem('token'))
-    // console.log(localStorage.getItem('token'))
-   
-    
+    let [token, settoken] = useState(localStorage.getItem('token'))
     const [currentPage, setCurrentPage] = useState(1);
     const onPageChange = (page) => setCurrentPage(page);
     let [render, setrender] = useState(true);
+    let navigation = useNavigate();
     let [checkedvalue, setcheckedvalue] = useState([])
+
+
     let selectall = (event) => {
         if (event.target.checked == true) {
             let data = []
@@ -28,55 +28,70 @@ export default function ViewColor() {
 
 
     let clear = (id) => {
-        axios.delete(`http://localhost:5556/api/admin/color/delete/${id}`,'',{
-            headers:{
-                Authorization:`Bearer ${token}` 
+        axios.delete(`http://localhost:5556/api/admin/color/delete/${id}`, '', {
+            headers: {
+                Authorization: `Bearer ${token}`
             },
-            
+
         })
             .then((response) => {
-                setrender(!render)
+                if (response.data.tokenstatus != false) {
+                    setrender(!render)
+                } else {
+                    navigation('/')
+                }
+
             }).catch((error) => {
-                alert('something went wrong')
+                toast.error('something went wrong')
             })
 
     }
 
 
     useEffect(() => {
-        axios.post(`http://localhost:5556/api/admin/color`,{page: currentPage,
-            limit: 10},{
-            headers:{
-                Authorization:`Bearer ${token}` 
+        axios.post(`http://localhost:5556/api/admin/color`, {
+            page: currentPage,
+            limit: 10
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
             },
-            
+
         })
             .then((response) => {
-                setcolor(response.data.data)
-
+                if (response.data.tokenstatus != false) {
+                    setcolor(response.data.data)
+                } else {
+                    navigation('/')
+                }
             }).catch((error) => {
-                alert('something went wrong ')
+                toast.error('something went wrong ')
             })
-    }, [render])
+    },[render])
 
 
-    
+
     let deleteall = () => {
         if (confirm('are you sure you want to delete')) {
             axios.post('http://localhost:5556/api/admin/color/delete', {
                 id: checkedvalue
-            },{
-                headers:{
-                    Authorization:`Bearer ${token}` 
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 },
-                
+
             })
-            .then((response) => {
-                setrender(!render)
-                setcheckedvalue([])
-            }).catch((error) => {
-                alert('somrthing went wrong')
-            })
+                .then((response) => {
+                    if (response.data.tokenstatus != false) {
+                        setrender(!render)
+                        setcheckedvalue([])
+                    } else {
+                        navigation('/')
+                    }
+
+                }).catch((error) => {
+                    toast.error('somrthing went wrong')
+                })
         }
 
     }
@@ -99,25 +114,30 @@ export default function ViewColor() {
         console.log(checkedvalue)
     }
 
-    
+
     let changeStatus = () => {
         axios.post('http://localhost:5556/api/admin/color/change-status', {
             id: checkedvalue
-        },{
-            headers:{
-                Authorization:`Bearer ${token}` 
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
             },
-            
+
         })
-        .then((response) => {
-            setrender(!render)
-            setcheckedvalue([])
-        }).catch((error) => {
-            alert('somrthing went wrong')
-        })
+            .then((response) => {
+                if (response.data.tokenstatus != false) {
+                    setrender(!render)
+                    setcheckedvalue([])
+                } else {
+                    navigation('/')
+                }
+
+            }).catch((error) => {
+                toast.error('somrthing went wrong')
+            })
 
     }
-    // console.log(color)
+    
     return (
         <>
 

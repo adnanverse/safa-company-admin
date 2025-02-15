@@ -1,69 +1,81 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify';
 export default function AddColor() {
     let navigation = useNavigate();
-    let [colorstate,setcolorstate]=useState('')
-        let params = useParams();
-    let colorset = (event)=>{
+    let[render,setrender]=useState(true)
+    let [colorstate, setcolorstate] = useState('')
+    let params = useParams();
+    let [token, settoken] = useState(localStorage.getItem('token'))
+    let [colordetails, setcolordetails] = useState('')
+    let colorset = (event) => {
         setcolorstate(event.target.value)
     }
-    let   [token ,settoken]=useState(localStorage.getItem('token'))
-    console.log(colorstate)
-    let [colordetails,setcolordetails]=useState('')
-    console.log(colorstate)
-    useEffect(()=>{
-        if(params.id!=null){
-            axios.post(`http://localhost:5556/api/admin/color/detail/${params.id}`,'',{
-                headers:{
-                    Authorization:`Bearer ${token}` 
+
+    useEffect(() => {
+        if (params.id != null) {
+            axios.post(`http://localhost:5556/api/admin/color/detail/${params.id}`, '', {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 },
-                
-            })
-            .then((response)=>{
-                setcolordetails(response.data.data)
-            }).catch((error)=>{
-                alert('something went wrong ')
+
+            }).then((response) => {
+                if (response.data.tokenstatus != false) {
+                    setcolordetails(response.data.data)
+                }
+                else {
+                    navigation('/')
+                }
+
+            }).catch((error) => {
+                toast.error('Something went wrong ')
             })
         }
-    },[])
-   
-    let formhandle = (event)=>{
-        event.preventDefault();
-       
-       
-       if(params.id!=null){
-            axios.put(`http://localhost:5556/api/admin/color/update/${params.id}`,event.target,{
-                headers:{
-                    Authorization:`Bearer ${token}` 
-                },
-                
-            })
-            .then((response)=>{
-                navigation(`/color/update/${params.id}`)
-            }).catch((error)=>{
-                alert('something went wrong')
-            })
-       }else{
-        axios.post(`http://localhost:5556/api/admin/color/add`,event.target,{
-            headers:{
-                Authorization:`Bearer ${token}` 
-            },
-            
-        })
-        .then((response)=>{
-            event.target.reset();
-            setcolorstate('')
-        }).catch((error)=>{
-            alert('something went wrong ')
-        })
-       }
+    }, [params,render])
 
-            
+    let formhandle = (event) => {
+        event.preventDefault();
+        if (params.id != null) {
+            axios.put(`http://localhost:5556/api/admin/color/update/${params.id}`, event.target, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+             })
+                .then((response) => {
+                    if(response.data.tokenstatus!=false){
+                        setrender(!render)
+                        toast.success('color updated successfully')
+                    }else{
+                        navigation('/')
+                    }
+                }).catch((error) => {
+                    toast.error('something went wrong')
+                })
+        } else {
+            axios.post(`http://localhost:5556/api/admin/color/add`, event.target, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+
+            })
+                .then((response) => {
+                    if (response.data.tokenstatus != false) {
+                        event.target.reset();
+                        setcolorstate('')
+                    } else {
+                        navigation('/')
+                    }
+                }).catch((error) => {
+                    toast.error('something went wrong ')
+                })
+        }
+
+
     }
 
     return (
-        
+
         <>
             <section class="w-full">
                 <nav class="flex border-b-2" aria-label="Breadcrumb">
@@ -75,18 +87,18 @@ export default function AddColor() {
                         <li aria-current="page">
                             <div class="flex items-center">/<span class="ms-1 text-md font-medium text-gray-500 md:ms-2">
                                 {
-                                    (params.id!=null)? 'Update color' : ' Add Color'
+                                    (params.id != null) ? 'Update color' : ' Add Color'
                                 }
-                               
-                                </span></div>
+
+                            </span></div>
                         </li>
                     </ol>
                 </nav>
                 <div class="w-full min-h-[610px]">
                     <div class="max-w-[1220px] mx-auto py-5">
                         <h3 class="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">{
-                                    (params.id!=null)? 'Update color' : ' Add Color'
-                                }</h3>
+                            (params.id != null) ? 'Update color' : ' Add Color'
+                        }</h3>
                         <form onSubmit={formhandle} class="border border-t-0 p-3 rounded-b-md border-slate-400">
                             <div class="mb-5">
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900"> Name</label>
@@ -103,7 +115,7 @@ export default function AddColor() {
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900"> Choose Color</label>
                                 <div className='flex'>
                                     <input
-                                    onChange={colorset}
+                                        onChange={colorset}
                                         type="color"
                                         placeholder='choose Color'
                                         defaultValue={colordetails.code}
@@ -114,11 +126,13 @@ export default function AddColor() {
                                         name="code"
 
                                         value={
-                                            (colorstate!='')?
-                                                        colorstate
-                                            :
-                                            colordetails.code}
+                                            (colorstate != '') ?
+                                                colorstate
+                                                :
+                                                colordetails.code}
                                         id="base-input"
+                                        disabled
+
                                         class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
                                         placeholder="Category Name"
                                     />

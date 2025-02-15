@@ -12,7 +12,7 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { Link } from 'react-router-dom';
 import { CommonContext } from './context/Context';
 export default function Sidebars() {
-    let {companyProfileDetails,companyProfilebaseurl}=useContext(CommonContext)
+    let { companyProfileDetails, companyProfilebaseurl } = useContext(CommonContext)
     return (
         <>
             {/* <button data-drawer-target="separator-sidebar" data-drawer-toggle="separator-sidebar" aria-controls="separator-sidebar" type="button" class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
@@ -26,11 +26,11 @@ export default function Sidebars() {
                 <Sidebar class="h-full px-3  overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <div class="flex pb-2 items-center  text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src={
-                            (companyProfileDetails!='')?
-                            ((companyProfileDetails.sub_logo!=null)?companyProfilebaseurl+'/'+companyProfileDetails.sub_logo : '/images/nullimage.jpg')
-                            :
-                            '/images/nullimage.jpg'
-                             } class="w-6 me-3 " alt="Flowbite Logo" />
+                            (companyProfileDetails != '') ?
+                                ((companyProfileDetails.sub_logo != null) ? companyProfilebaseurl + '/' + companyProfileDetails.sub_logo : '/images/nullimage.jpg')
+                                :
+                                '/images/nullimage.jpg'
+                        } class="w-6 me-3 " alt="Flowbite Logo" />
                         <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Safa Company</span>
                     </div>
                     <ul class="space-y-2 font-medium">
@@ -179,7 +179,7 @@ export default function Sidebars() {
                                     </div></Link>
                             </Sidebar.Collapse>
                         </li>
-                      
+
                         <li>
                             <Sidebar.Collapse icon={FaCartPlus} label="Sub Category">
 

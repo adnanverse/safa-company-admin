@@ -1,6 +1,6 @@
 import axios, { all, toFormData } from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useParams } from 'react-router-dom'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import Select from 'react-select'
 import { MdDelete } from "react-icons/md";
@@ -23,11 +23,12 @@ export default function AddProduct() {
     let [SelectedMultipleImages, setSelectedMultipleImages] = useState([])
     let [ProductImages, setProductImages] = useState([])
     let [material, setMaterial] = useState([])
+    let navigation = useNavigate();
 
     //PRODUCT GALLERY IMAGE DELETE API -----------------------------------------------------------------------------------------------
-    let DeleteImage=(id)=>{
+    let DeleteImage = (id) => {
         axios.post('http://localhost:5556/api/admin/products/delete-images', {
-        id:id
+            id: id
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -35,11 +36,17 @@ export default function AddProduct() {
 
         })
             .then((response) => {
-                toast.success('images deleted successfully')
-                setrender(!render)
+                if (response.data.tokenstatus != false) {
+                    toast.success('image deleted successfully')
+                    setrender(!render)
+
+                } else {
+                    navigation('/')
+                }
+
             })
             .catch((error) => {
-                toast.error('something went wrong')
+                toast.error('Something went wrong')
             })
     }
 
@@ -57,10 +64,16 @@ export default function AddProduct() {
 
         })
             .then((response) => {
-                setsubcategory(response.data.data)
+                if(response.data.tokenstatus!=false){
+                    setsubcategory(response.data.data)
+                }
+                else{
+                    navigation('/')
+                }
+                
             })
             .catch((error) => {
-                alert('something went wrong')
+                toast.error('something went wrong')
             })
     }
 
@@ -77,12 +90,16 @@ export default function AddProduct() {
                 Authorization: `Bearer ${token}`
             },
 
-        })
-            .then((response) => {
-                setsubsubcategory(response.data.data)
+        }).then((response) => {
+                if(response.data.tokenstatus!=false){
+                    setsubsubcategory(response.data.data)
+                }else{
+                    navigation('/')
+                }
+                
             })
             .catch((error) => {
-                alert('something went wrong')
+                toast.error('Something went wrong')
             })
     }
 
@@ -90,8 +107,7 @@ export default function AddProduct() {
     //PRODUCT DETAILS API ----------------------------------------------------------------------------->>>>>>
 
     useEffect(() => {
-        console.log(params)
-        if (params.id != null) {
+        if (params.id != undefined) {
 
             axios.post(`http://localhost:5556/api/admin/products/detail/${params.id}`, '',
                 {
@@ -100,6 +116,7 @@ export default function AddProduct() {
                     },
 
                 }).then((response) => {
+                    if(response.data.tokenstatus!=false){
                     setproductdetails(response.data.data)
                     setproductBaseUrl(response.data.base_url)
                     console.log(response.data.data)
@@ -126,10 +143,13 @@ export default function AddProduct() {
                             }
 
                             ) : [])
+                        }else{
+                            navigation('/')
+                        }
 
                 })
                 .catch((error) => {
-                    toast.error('something went wrong')
+                    toast.error('Something went wrong')
                 })
 
             axios.post(`http://localhost:5556/api/admin/products/product-images`, {
@@ -141,12 +161,14 @@ export default function AddProduct() {
                     },
 
                 }).then((response) => {
-
-                    console.log(response.data.data)
+                    if(response.data.tokenstatus!=false){
                     setProductImages(response.data.data)
+                    }else{
+                        navigation('/')
+                    }
                 })
                 .catch((error) => {
-                    toast.error('something went wrong')
+                    toast.error('Something went wrong')
                 })
 
             GetSubCategory('');
@@ -159,10 +181,10 @@ export default function AddProduct() {
 
         }
 
-    }, [params,render])
+    }, [params, render])
 
 
-  
+
 
 
     // READ IMAGE FROM INPUT TYPE FILE ------------------------>>>>>>>>>>>>>
@@ -224,7 +246,11 @@ export default function AddProduct() {
             },
 
         }).then((response) => {
+            if(response.data.tokenstatus!=false){
             setMaterial(response.data.data)
+            }else{
+                navigation('/')
+            }
 
         }).catch((error) => {
             toast.error('Something went wrong !!')
@@ -243,11 +269,14 @@ export default function AddProduct() {
 
         })
             .then((response) => {
+                if(response.data.tokenstatus!=false){
                 setsize(response.data.data)
-
+                }else{
+                    navigation('/')
+                }
             })
             .catch((error) => {
-                toast.error('something went wrong')
+                toast.error('Something went wrong')
             })
     }, [])
 
@@ -262,9 +291,13 @@ export default function AddProduct() {
 
         })
             .then((response) => {
+                if(response.data.tokenstatus!=false){
                 setcolor(response.data.data)
+                }else{
+                    navigation('/')
+                }
             }).catch((error) => {
-                toast.error('something went wrong ')
+                toast.error('Something went wrong ')
             })
     }, [])
 
@@ -309,44 +342,36 @@ export default function AddProduct() {
 
             })
                 .then((response) => {
-                    navigation(`/color/update/${params.id}`)
+                    if(response.data.tokenstatus!=false){
+                        setrender(!render)
+                    }
+                    else{
+                        navigation('/')
+                    }
 
                 }).catch((error) => {
                     toast.error('something went wrong')
                 })
         } else {
 
-            axios.post(`http://localhost:5556/api/admin/products/add`,
-                // 
-                //  toFormData({
-
-                //     name              : event.target.name.value,
-                //     actual_price      : event.target.actual_price.value,
-                //     sale_price        : event.target.sale_price.value,
-                //     category_id       : event.target.category_id.value,
-                //     sub_category_id   : event.target.sub_category_id.value,
-                //     color_id          : event.target.color_id.value,
-                //     size_ids          : allsizes,
-                //     description       : event.target.description.value,
-                //     short_description : event.target.short_description.value,
-                //     image             : event.target.image.value,
-                //     images            : event.target.images.value,
-                //     // order:event.target.order.value,
-                // })
-                event.target
-                , {
+            axios.post(`http://localhost:5556/api/admin/products/add`,event.target,{
                     headers: {
                         Authorization: `Bearer ${token}`
                     },
 
                 })
                 .then((response) => {
+                    if(response.data.tokenstatus!=false){
                     toast.success('Product Submitted !!')
                     event.target.reset();
                     setselectedsizes([])
+                    }else{
+
+                        navigation('/')
+                    }
                 })
                 .catch((error) => {
-                    toast.error('something went wrong')
+                    toast.error('Something went wrong')
 
                 })
         }
@@ -367,7 +392,11 @@ export default function AddProduct() {
             }
 
         }).then((response) => {
+            if(response.data.tokenstatus!=false){
             SetCategories(response.data.data)
+            }else{
+                navigation('/')
+            }
         }).catch((error) => {
             console.log('something went wrong')
         })
@@ -522,7 +551,7 @@ export default function AddProduct() {
                                 <textarea
                                     name="description"
                                     id="message"
-                                    defaultValue={(productdetails!=null) ?productdetails.description : ''}
+                                    defaultValue={(productdetails != null) ? productdetails.description : ''}
                                     rows="3"
                                     class="resize-none block p-2.5 w-full text-sm text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                                     placeholder="Add Product Description....."
@@ -532,7 +561,7 @@ export default function AddProduct() {
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900">Short Description</label>
                                 <textarea
                                     name="short_description"
-                                    defaultValue={(productdetails!=null) ?productdetails.short_description:''}
+                                    defaultValue={(productdetails != null) ? productdetails.short_description : ''}
                                     id="message"
 
                                     rows="3"
@@ -645,7 +674,7 @@ export default function AddProduct() {
                                         ProductImages.map((v, i) => {
                                             return (
                                                 <div className='border p-3 relative'>
-                                                    <div onClick={()=>DeleteImage(v._id)} className=' absolute top-4 text-[25px] bg-white text-[red] right-4 p-1 cursor-pointer rounded-full'>
+                                                    <div onClick={() => DeleteImage(v._id)} className=' absolute top-4 text-[25px] bg-white text-[red] right-4 p-1 cursor-pointer rounded-full'>
                                                         <MdDelete />
                                                     </div>
                                                     <img src={productBaseUrl + '/' + v.image} className='w-[100%]' alt="" />

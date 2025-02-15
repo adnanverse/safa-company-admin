@@ -1,35 +1,41 @@
 import axios, { toFormData } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Pagination } from "flowbite-react";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify';
 
 export default function ViewSubCategory() {
-  let   [subcategory, setsubcategory] = useState([])
+  let [subcategory, setsubcategory] = useState([])
   const [currentPage, setCurrentPage] = useState(1);
   const onPageChange = (page) => setCurrentPage(page);
-  let   [imageurl, setimageurl] = useState('')
-  let   [render, setrender] = useState(true)
-  let   [checkedvalue, setcheckedvalue] = useState([])
-  let   [token ,settoken]=useState(localStorage.getItem('token'))
+  let [imageurl, setimageurl] = useState('')
+  let [render, setrender] = useState(true)
+  let [checkedvalue, setcheckedvalue] = useState([])
+  let [token, settoken] = useState(localStorage.getItem('token'))
+  let navigation = useNavigate()
 
 
   useEffect(() => {
     axios.post('http://localhost:5556/api/admin/sub-categories', {
       page: currentPage,
       limit: 10
-    },{
-      headers : {
-        Authorization: `Bearer ${token}`  
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
     })
       .then((response) => {
+        if(response.data.tokenstatus!=false){
         setimageurl(response.data.base_url)
         setsubcategory(response.data.data)
+        }else{
+          navigation('/')
+        }
       })
       .catch((error) => {
-        alert('something went wrong')
+        toast.error('something went wrong')
       })
-  },[render])
+  }, [render])
 
 
 
@@ -51,8 +57,8 @@ export default function ViewSubCategory() {
     }
   }
 
-  
-  
+
+
   let SelectAll = (event) => {
     if (event.target.checked == true) {
       let data = [];
@@ -65,51 +71,53 @@ export default function ViewSubCategory() {
     }
   }
 
-  
+
   let deleteall = () => {
     if (checkedvalue.length > 0) {
       if (confirm('are u sure to delete items')) {
         axios.post('http://localhost:5556/api/admin/sub-categories/delete', toFormData({
           id: checkedvalue,
-        }),{
-          headers:{
-              Authorization:`Bearer ${token}` 
+        }), {
+          headers: {
+            Authorization: `Bearer ${token}`
           },
-          
-      })
+
+        })
           .then((response) => {
-            if (response.data.status == true) {
+            if(response.data.tokenstatus!=false){
               setcheckedvalue([])
+              toast.success('Records Delete successfully')
               setrender(!render)
             } else {
-              alert('something went wrong')
+              navigation('/')
             }
           }).catch((error) => {
-
+            toast.error('Something went wrong ')
           })
       }
     }
-}
+  }
 
-//for status change------------------------------------------------->>>>>>>>>>
+  //for status change------------------------------------------------->>>>>>>>>>
   let changeStatus = () => {
     axios.post('http://localhost:5556/api/admin/sub-categories/change-status', toFormData({
       id: checkedvalue,
-    }),{
-      headers:{
-          Authorization:`Bearer ${token}` 
+    }), {
+      headers: {
+        Authorization: `Bearer ${token}`
       },
-      
-  })
+
+    })
       .then((response) => {
-        if (response.data.status == true) {
+        if (response.data.tokenstatus != false) {
           setcheckedvalue([])
+          toast.success('Status Change successfully')
           setrender(!render)
         } else {
-          alert('something went wrong')
+          navigation('/')
         }
       }).catch((error) => {
-
+        toast.error('Something Went Wrong ')
       })
   }
 

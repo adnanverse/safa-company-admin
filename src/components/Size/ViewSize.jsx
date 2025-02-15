@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Pagination } from "flowbite-react";
+import { toast } from 'react-toastify';
 
 
 export default function ViewSize() {
@@ -10,7 +11,8 @@ export default function ViewSize() {
     const onPageChange = (page) => setCurrentPage(page);
     let [sizedelete, setsizedelete] = useState(true)
     let [checkedvalue, setcheckedvalue] = useState([]);
-    let   [token ,settoken]=useState(localStorage.getItem('token'))
+    let [token, settoken] = useState(localStorage.getItem('token'))
+    let navigation = useNavigate();
 
 
     let singlecheckbox = (event) => {
@@ -34,16 +36,21 @@ export default function ViewSize() {
         if (confirm('are you sure you want to delete')) {
             axios.post('http://localhost:5556/api/admin/size/delete', {
                 id: checkedvalue
-            },{
-                headers:{
-                    Authorization:`Bearer ${token}` 
+            }, {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 },
-                
+
             }).then((response) => {
-                setsizedelete(!sizedelete)
-                setcheckedvalue([])
+                if (response.data.tokenstatus != false) {
+                    toast.success('Size deleted successfully')
+                    setsizedelete(!sizedelete)
+                    setcheckedvalue([])
+                } else {
+                    navigation('/')
+                }
             }).catch((error) => {
-                alert('somrthing went wrong')
+                toast.error('somrthing went wrong')
             })
         }
 
@@ -51,16 +58,21 @@ export default function ViewSize() {
     let changeStatus = () => {
         axios.post('http://localhost:5556/api/admin/size/change-status', {
             id: checkedvalue
-        },{
-            headers:{
-                Authorization:`Bearer ${token}` 
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
             },
-            
+
         }).then((response) => {
-            setsizedelete(!sizedelete)
-            setcheckedvalue([])
+            if (response.data.tokenstatus != false) {
+                toast.success('Sizes status change successfully')
+                setsizedelete(!sizedelete)
+                setcheckedvalue([])
+            } else {
+                navigation('/')
+            }
         }).catch((error) => {
-            alert('somrthing went wrong')
+            toast.error('something went wrong')
         })
 
     }
@@ -76,39 +88,28 @@ export default function ViewSize() {
             setcheckedvalue([])
         }
     }
-    let deletsize = (id) => {
-        axios.delete(`http://localhost:5556/api/admin/size/delete`, {
-            id: id
-        },{
-            headers:{
-                Authorization:`Bearer ${token}` 
-            },
-            
-        })
-            .then((response) => {
-                setsizedelete(!sizedelete)
-            }).catch((error) => {
-                alert('something went wrong')
-            })
-    }
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/size',{
+        axios.post('http://localhost:5556/api/admin/size', {
             page: currentPage,
             limit: 10
-        },{
-            headers:{
-                Authorization:`Bearer ${token}` 
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
             },
-            
+
         })
             .then((response) => {
-                setSize(response.data.data)
+                if (response.data.tokenstatus != false) {
+                    setSize(response.data.data)
+                } else {
+                    navigation('/')
+                }
 
             })
             .catch((error) => {
-                alert('something went wrong')
+                toast.error('something went wrong')
             })
-    }, [])
+    }, [sizedelete])
     return (
         <>
             <section class="w-full">
