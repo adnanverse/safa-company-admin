@@ -10,7 +10,7 @@ export default function AddSize() {
     let [SizeDetail, setSizeDetail] = useState('')
     let [token, settoken] = useState(localStorage.getItem('token'))
     useEffect(() => {
-        if (params.id != null) {
+        if (params.id != undefined) {
             axios.post(`http://localhost:5556/api/admin/size/detail/${params.id}`, '', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -27,6 +27,8 @@ export default function AddSize() {
                 .catch((error) => {
                     toast.error('something went wrong ')
                 })
+        }else{
+            setSizeDetail('')
         }
     }, [params, render])
 

@@ -1,5 +1,11 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
+import { CommonContext } from './components/context/Context'
 export default function Dashboard() {
+    let {companyProfilerender, setcompanyProfilerender,setrender,render}=useContext(CommonContext)
+    useEffect(()=>{
+        setcompanyProfilerender(!companyProfilerender)
+        setrender(!render)
+    },[])
     return (
         <>
             <section class="w-full">

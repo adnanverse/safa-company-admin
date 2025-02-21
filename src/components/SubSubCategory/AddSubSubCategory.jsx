@@ -78,7 +78,7 @@ export default function AddSubSubCategory() {
 
     
     useEffect(() => {
-        axios.post(`http://localhost:5556/api/admin/sub-categories/detail/${params.id}`, '', {
+        axios.post(`http://localhost:5556/api/admin/sub-sub-categories/detail/${params.id}`, '', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -120,7 +120,7 @@ export default function AddSubSubCategory() {
                     <ol class="p-3 px-6 inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center"><a href="#" class="inline-flex items-center text-md font-medium text-gray-700 hover:text-blue-600">Home</a></li>
                         <li>
-                            <div class="flex items-center">/<a href="#" class="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Sub Category</a></div>
+                            <div class="flex items-center">/<a href="#" class="ms-1 text-md font-medium text-gray-700 hover:text-blue-600 md:ms-2">Sub Sub Category</a></div>
                         </li>
                         <li aria-current="page">
                             <div class="flex items-center">/<span class="ms-1 text-md font-medium text-gray-500 md:ms-2">
@@ -136,7 +136,7 @@ export default function AddSubSubCategory() {
                     <div class="max-w-[1220px] mx-auto py-5">
                         <h3 class="text-[26px] font-semibold bg-slate-100 py-3 px-4 rounded-t-md border border-slate-400">
                             {
-                                (params.id != null) ? 'Update sub category' : ' Add Sub Category '
+                                (params.id != null) ? 'Update sub sub category' : ' Add sub Sub Category '
                             }</h3>
                         <form onSubmit={formhandler} autoComplete='off' class="border border-t-0 p-3 rounded-b-md border-slate-400">
                             <div class="mb-5">
@@ -257,7 +257,7 @@ export default function AddSubSubCategory() {
                                 type="submit"
                                 class="focus:outline-none my-10 text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
                             >
-                                Add Sub Category
+                                Submit
                             </button>
                         </form>
                     </div>

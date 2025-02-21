@@ -13,6 +13,7 @@ export default function Context({ children }) {
 
 
 	useEffect(() => {
+		settoken(localStorage.getItem('token'))
 		axios.post('http://localhost:5556/api/admin/profile/detail', '', {
 			headers: {
 				Authorization: `Bearer ${token}`

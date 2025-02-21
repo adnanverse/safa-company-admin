@@ -124,7 +124,7 @@ export default function AddCategory() {
                                     defaultValue={CatDetails.order}
                                     id="base-input"
                                     class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                    placeholder="Category Name"
+                                    placeholder="Category Order"
                                 />
                             </div>
                             

@@ -12,10 +12,11 @@ export default function Login() {
     axios.post('http://localhost:5556/api/admin/login', event.target)
       .then((response) => {
         if(response.data.status==true){
+          localStorage.setItem('token', response.data.token)
           setcompanyProfilerender(!companyProfilerender)
           setrender(!render)
           navigation('/dashboard')
-          localStorage.setItem('token', response.data.token)
+          
         }else{
           toast.error(response.data.message)
         }

@@ -99,6 +99,8 @@ export default function AddSubCategory() {
                 }).catch(() => {
                     toast.error('something went wrong !!!')
                 })
+        }else{
+            setdetails('')
         }
         
     }, [params,render])

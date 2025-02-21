@@ -283,7 +283,8 @@ export default function AddProduct() {
     //API FOR COLOR ------------------------------------------------------------------------------->>>>
     useEffect(() => {
         axios.post(`http://localhost:5556/api/admin/color`, {
-            status: true
+            status: true,
+            limit:200
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -364,6 +365,9 @@ export default function AddProduct() {
                     if(response.data.tokenstatus!=false){
                     toast.success('Product Submitted !!')
                     event.target.reset();
+                    setSelectedAnimationImage('')
+                    setSelectedProductImage('')
+                    setSelectedMultipleImages([])
                     setselectedsizes([])
                     }else{
 
@@ -499,7 +503,7 @@ export default function AddProduct() {
                                         material.map((v, i) => {
                                             return (
                                                 <option selected={
-                                                    (v._id == productdetails.material_id)
+                                                    (v._id == (productdetails.material_id?productdetails.material_id._id:productdetails.material_id))
                                                         ?
                                                         'selected'
                                                         :

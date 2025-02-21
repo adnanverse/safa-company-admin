@@ -73,6 +73,8 @@ export default function AddSocialLinks() {
                 }).catch(() => {
                     alert('something went wrong !!!')
                 })
+            }else{
+                setdetails('')
             }
         }, [params])
     
@@ -114,7 +116,7 @@ export default function AddSocialLinks() {
                                     defaultValue={details.name}
                                     id="base-input"
                                     class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                    placeholder="Category Name"
+                                    placeholder=" Name"
                                 />
                             </div>
                             <div class="mb-5">
@@ -125,7 +127,7 @@ export default function AddSocialLinks() {
                                     defaultValue={details.url}
                                     id="base-input"
                                     class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                    placeholder="Category Name"
+                                    placeholder="Url"
                                 />
                             </div>
 
@@ -159,7 +161,7 @@ export default function AddSocialLinks() {
                                     defaultValue={details.order}
                                     id="base-input"
                                     class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                    placeholder="Enter Order"
+                                    placeholder=" Order"
                                 />
                             </div>
 

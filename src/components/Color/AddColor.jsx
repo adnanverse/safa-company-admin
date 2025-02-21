@@ -14,7 +14,7 @@ export default function AddColor() {
     }
 
     useEffect(() => {
-        if (params.id != null) {
+        if (params.id != undefined) {
             axios.post(`http://localhost:5556/api/admin/color/detail/${params.id}`, '', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -31,12 +31,15 @@ export default function AddColor() {
             }).catch((error) => {
                 toast.error('Something went wrong ')
             })
+        }else{
+            setcolordetails('')
+            setcolorstate('')
         }
     }, [params,render])
 
     let formhandle = (event) => {
         event.preventDefault();
-        if (params.id != null) {
+        if (params.id != undefined) {
             axios.put(`http://localhost:5556/api/admin/color/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -63,6 +66,7 @@ export default function AddColor() {
                     if (response.data.tokenstatus != false) {
                         event.target.reset();
                         setcolorstate('')
+
                     } else {
                         navigation('/')
                     }
@@ -108,7 +112,7 @@ export default function AddColor() {
                                     defaultValue={colordetails.name}
                                     id="base-input"
                                     class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                    placeholder="Category Name"
+                                    placeholder="Color Name"
                                 />
                             </div>
                             <div class="mb-5">
@@ -120,7 +124,7 @@ export default function AddColor() {
                                         placeholder='choose Color'
                                         defaultValue={colordetails.code}
                                         className=' placeholder:text-white h-10'
-                                        name='colorbox' />
+                                        name='code' />
                                     <input
                                         type="text"
                                         name="code"
@@ -134,7 +138,7 @@ export default function AddColor() {
                                         disabled
 
                                         class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                        placeholder="Category Name"
+                                        placeholder=""
                                     />
                                 </div>
 
@@ -147,13 +151,10 @@ export default function AddColor() {
                                     defaultValue={colordetails.order}
                                     id="base-input"
                                     class="text-[19px] border-2 shadow-sm border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 px-3"
-                                    placeholder="Category Name"
+                                    placeholder="Color Order"
                                 />
                             </div>
-                            <div>
-
-
-                            </div>
+    
 
 
 

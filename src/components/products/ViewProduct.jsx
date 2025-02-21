@@ -318,7 +318,8 @@ let GetSubCategoryid=(event)=>{
   //----COLOR API ----------------------------------------------------------------------->>>>>>>>>>>>>
   useEffect(() => {
     axios.post(`http://localhost:5556/api/admin/color`, {
-      status: true
+      status: true,
+      limit:200
     }, {
       headers: {
         Authorization: `Bearer ${token}`
