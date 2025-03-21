@@ -40,7 +40,7 @@ export default function CompanyProfile() {
 
     let formhandle = (event) => {
         event.preventDefault();
-        axios.put(`http://localhost:5556/api/admin/company-profile/update/${companyProfileDetails._id}`, event.target, {
+        axios.put(`https://safa-company-api.onrender.com/api/admin/company-profile/update/${companyProfileDetails._id}`, event.target, {
             headers: {
                 Authorization: `Bearer ${token}`
             },

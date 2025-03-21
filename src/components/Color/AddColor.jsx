@@ -15,7 +15,7 @@ export default function AddColor() {
 
     useEffect(() => {
         if (params.id != undefined) {
-            axios.post(`http://localhost:5556/api/admin/color/detail/${params.id}`, '', {
+            axios.post(`https://safa-company-api.onrender.com/api/admin/color/detail/${params.id}`, '', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -40,7 +40,7 @@ export default function AddColor() {
     let formhandle = (event) => {
         event.preventDefault();
         if (params.id != undefined) {
-            axios.put(`http://localhost:5556/api/admin/color/update/${params.id}`, event.target, {
+            axios.put(`https://safa-company-api.onrender.com/api/admin/color/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -56,7 +56,7 @@ export default function AddColor() {
                     toast.error('something went wrong')
                 })
         } else {
-            axios.post(`http://localhost:5556/api/admin/color/add`, event.target, {
+            axios.post(`https://safa-company-api.onrender.com/api/admin/color/add`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

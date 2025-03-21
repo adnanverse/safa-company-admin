@@ -15,7 +15,6 @@ export default function ViewMaterial() {
 
     let singlecheckbox = (event) => {
         if (event.target.checked == true) {
-            console.log(event.target.checked)
             checkedvalue.push(event.target.id)
             setmaterialdelete(!materialdelete)
             setcheckedvalue(checkedvalue)
@@ -34,7 +33,7 @@ export default function ViewMaterial() {
 
     let deleteall = () => {
         if (confirm('are you sure you want to delete')) {
-            axios.post('http://localhost:5556/api/admin/material/delete', {
+            axios.post('https://safa-company-api.onrender.com/api/admin/material/delete', {
                 id: checkedvalue
             }, {
                 headers: {
@@ -57,7 +56,7 @@ export default function ViewMaterial() {
     }
 
     let changeStatus = () => {
-        axios.post('http://localhost:5556/api/admin/material/change-status', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/material/change-status', {
             id: checkedvalue
         }, {
             headers: {
@@ -92,7 +91,7 @@ export default function ViewMaterial() {
 
 
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/material', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/material', {
             page: currentPage,
             limit: 10
         }, {

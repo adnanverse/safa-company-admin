@@ -11,7 +11,7 @@ export default function AddSize() {
     let [token, settoken] = useState(localStorage.getItem('token'))
     useEffect(() => {
         if (params.id != undefined) {
-            axios.post(`http://localhost:5556/api/admin/size/detail/${params.id}`, '', {
+            axios.post(`https://safa-company-api.onrender.com/api/admin/size/detail/${params.id}`, '', {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -35,7 +35,7 @@ export default function AddSize() {
     let formhandler = (event) => {
         event.preventDefault();
         if (params.id != null) {
-            axios.put(`http://localhost:5556/api/admin/size/update/${params.id}`, event.target, {
+            axios.put(`https://safa-company-api.onrender.com/api/admin/size/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -53,7 +53,7 @@ export default function AddSize() {
                     toast.error('something went wrong')
                 })
         } else {
-            axios.post('http://localhost:5556/api/admin/size/add', event.target, {
+            axios.post('https://safa-company-api.onrender.com/api/admin/size/add', event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },

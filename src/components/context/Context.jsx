@@ -1,6 +1,5 @@
 import axios from 'axios';
 import React, { createContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
 const CommonContext = createContext();
 export default function Context({ children }) {
 	let [baseurl, setbaseurl] = useState('')
@@ -14,7 +13,7 @@ export default function Context({ children }) {
 
 	useEffect(() => {
 		settoken(localStorage.getItem('token'))
-		axios.post('http://localhost:5556/api/admin/profile/detail', '', {
+		axios.post('https://safa-company-api.onrender.com/api/admin/profile/detail', '', {
 			headers: {
 				Authorization: `Bearer ${token}`
 			},
@@ -28,7 +27,7 @@ export default function Context({ children }) {
 
 				}
 
-				//  console.log(response.data)
+				
 			})
 			.catch((error) => {
 				toast.error('something went wrong')
@@ -36,7 +35,7 @@ export default function Context({ children }) {
 	}, [render])
 
 	useEffect(() => {
-		axios.post('http://localhost:5556/api/admin/company-profile/details', '', {
+		axios.post('https://safa-company-api.onrender.com/api/admin/company-profile/details', '', {
 			headers: {
 				Authorization: `Bearer ${token}`
 			},

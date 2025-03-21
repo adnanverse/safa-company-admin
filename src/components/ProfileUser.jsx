@@ -27,7 +27,7 @@ export default function ProfileUser({}) {
 	let formhandle=(event)=>{
 		event.preventDefault();
 		if((event.target.confirm_password.value=='' && event.target.password.value=='') || (event.target.password.value==event.target.confirm_password.value)){
-			axios.put('http://localhost:5556/api/admin/profile/update',event.target,{
+			axios.put('https://safa-company-api.onrender.com/api/admin/profile/update',event.target,{
 				headers: {
 					 Authorization: `Bearer ${token}`
 				},

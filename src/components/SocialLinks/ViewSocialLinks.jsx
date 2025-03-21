@@ -16,7 +16,7 @@ export default function ViewSocialLinks() {
   let navigation = useNavigate();
 
   useEffect(() => {
-    axios.post('http://localhost:5556/api/admin/social-links', {
+    axios.post('https://safa-company-api.onrender.com/api/admin/social-links', {
       page: currentPage,
       limit: 10
     },{
@@ -72,7 +72,7 @@ export default function ViewSocialLinks() {
   let deleteall = () => {
     if (checkedvalue.length > 0) {
       if (confirm('are u sure to delete items')) {
-        axios.post('http://localhost:5556/api/admin/social-links/delete', toFormData({
+        axios.post('https://safa-company-api.onrender.com/api/admin/social-links/delete', toFormData({
           id: checkedvalue,
         }),{
           headers:{
@@ -94,9 +94,8 @@ export default function ViewSocialLinks() {
     }
 }
 
-//for status change------------------------------------------------->>>>>>>>>>
-  let changeStatus = () => {
-    axios.post('http://localhost:5556/api/admin/social-links/change-status',{
+ let changeStatus = () => {
+    axios.post('https://safa-company-api.onrender.com/api/admin/social-links/change-status',{
       id: checkedvalue,
     },{
       headers:{

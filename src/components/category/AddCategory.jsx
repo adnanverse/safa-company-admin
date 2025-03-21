@@ -11,7 +11,7 @@ export default function AddCategory() {
     
     useEffect(()=>{
         if(params.id!=null){
-            axios.post(`http://localhost:5556/api/admin/categories/detail/${params.id}`,'',{
+            axios.post(`https://safa-company-api.onrender.com/api/admin/categories/detail/${params.id}`,'',{
                 headers:{
                     Authorization:`Bearer ${token}` 
                 },
@@ -33,7 +33,7 @@ export default function AddCategory() {
     
         event.preventDefault()
         if(params.id!=null){
-            axios.put(`http://localhost:5556/api/admin/categories/update/${params.id}`, event.target,{
+            axios.put(`https://safa-company-api.onrender.com/api/admin/categories/update/${params.id}`, event.target,{
                 headers:{
                     Authorization:`Bearer ${token}` 
                 },
@@ -50,7 +50,7 @@ export default function AddCategory() {
                     alert('something went wrong')
             })
         }else{
-            axios.post('http://localhost:5556/api/admin/categories/add',  event.target ,{
+            axios.post('https://safa-company-api.onrender.com/api/admin/categories/add',  event.target ,{
                 headers:{
                     Authorization:`Bearer ${token}` 
                 },

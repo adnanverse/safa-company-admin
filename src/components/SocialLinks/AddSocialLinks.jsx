@@ -13,7 +13,7 @@ export default function AddSocialLinks() {
     let formhandler = (event) => {
         event.preventDefault();
         if (params.id != null) {
-            axios.put(`http://localhost:5556/api/admin/social-links/update/${params.id}`, event.target, {
+            axios.put(`https://safa-company-api.onrender.com/api/admin/social-links/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -21,7 +21,6 @@ export default function AddSocialLinks() {
             })
                 .then((response) => {
                     if (response.data.status == true) {
-                        // navigation(`/parent-category/update/${params.id}`)
                         setrender(!render)
 
                     } else {
@@ -32,8 +31,8 @@ export default function AddSocialLinks() {
                     alert('something went wrong')
                 })
         } else {
-            console.log(event.target)
-            axios.post('http://localhost:5556/api/admin/social-links/add', event.target, {
+            
+            axios.post('https://safa-company-api.onrender.com/api/admin/social-links/add', event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -41,7 +40,7 @@ export default function AddSocialLinks() {
             })
                 .then((response) => {
                     if (response.data.status == true) {
-                        // alert(response.data.message)
+                        
                         toast.success('Record added successfully')
                         event.target.reset();
                     } else {
@@ -59,7 +58,7 @@ export default function AddSocialLinks() {
     
         useEffect(() => {
             if(params.id != undefined){
-            axios.post(`http://localhost:5556/api/admin/social-links/details`, toFormData({
+            axios.post(`https://safa-company-api.onrender.com/api/admin/social-links/details`, toFormData({
                 id:params.id
             }), {
                 headers: {

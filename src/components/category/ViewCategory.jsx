@@ -9,14 +9,14 @@ export default function ViewCategory() {
     const onPageChange = (page) => setCurrentPage(page);
     let navigation = useNavigate();
     const [render,setrender]=useState(true)
-     // checboxvalue this state contain all _ids ----------------------------------------->>>>>>
+   
      let [checboxvalue, setcheckboxvalue] = useState([])
      let   [token ,settoken]=useState(localStorage.getItem('token'))
     
     const [Categories, SetCategories] = useState([])
     let deleteall = ()=>{
         if(confirm('are u sure to delete items')){
-            axios.post('http://localhost:5556/api/admin/categories/delete',toFormData({
+            axios.post('https://safa-company-api.onrender.com/api/admin/categories/delete',toFormData({
                 id:checboxvalue,
             }),{
                 headers:{
@@ -39,7 +39,7 @@ export default function ViewCategory() {
     }
     
     let changeStatus=()=>{
-        axios.post('http://localhost:5556/api/admin/categories/change-status',toFormData({
+        axios.post('https://safa-company-api.onrender.com/api/admin/categories/change-status',toFormData({
             id:checboxvalue,
         }),{
             headers:{
@@ -60,8 +60,7 @@ export default function ViewCategory() {
     }
 
     let selectall = () => {
-        //if categories ki length equal nhi h chechboxvalue keeeeeeee--------------------------->>>>>>>>>>>>
-        if (Categories.length != checboxvalue.length) {
+         if (Categories.length != checboxvalue.length) {
             let data = [];
             Categories.forEach((v) => {
                 data.push(v._id)
@@ -90,7 +89,7 @@ export default function ViewCategory() {
     }
 
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/categories',{
+        axios.post('https://safa-company-api.onrender.com/api/admin/categories',{
             page: currentPage,
             limit:3
         },{
@@ -207,7 +206,7 @@ export default function ViewCategory() {
                                         <tr>
                                             <th scope="col" class="px-6 py-3" width='150px'>
                                                 <input name="deleteCheck" onChange={selectall} id="purple-checkbox" type="checkbox" class="w-4 mr-2 h-4 text-purple-600 bg-gray-100 border-gray-300 rounded focus:ring-purple-500" value=""
-                                                    // if checboxvalue ki length equal h Categories ki length se to checkbox check hojyaega
+                                                  
                                                     checked={(checboxvalue.length == Categories.length) ? 'true' : ''} />
 
 

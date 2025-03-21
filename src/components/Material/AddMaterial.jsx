@@ -10,9 +10,9 @@ export default function AddMaterial() {
     let [materialDetail,setmaterialDetail]=useState('')
     let   [token ,settoken]=useState(localStorage.getItem('token'))
     useEffect(()=>{
-        console.log(params.id)
+      
         if(params.id!=undefined){
-            axios.post(`http://localhost:5556/api/admin/material/details/${params.id}`,'',{
+            axios.post(`https://safa-company-api.onrender.com/api/admin/material/details/${params.id}`,'',{
                 headers:{
                     Authorization:`Bearer ${token}` 
                 },
@@ -37,7 +37,7 @@ export default function AddMaterial() {
     let formhandler=(event)=>{
         event.preventDefault();
         if(params.id!=null){
-              axios.put(`http://localhost:5556/api/admin/material/update/${params.id}`, event.target,{
+              axios.put(`https://safa-company-api.onrender.com/api/admin/material/update/${params.id}`, event.target,{
                 headers:{
                     Authorization:`Bearer ${token}` 
                 },
@@ -56,7 +56,7 @@ export default function AddMaterial() {
             toast.error('something went wrong')
     })
         }else{
-            axios.post('http://localhost:5556/api/admin/material/add',event.target,{
+            axios.post('https://safa-company-api.onrender.com/api/admin/material/add',event.target,{
                 headers:{
                     Authorization:`Bearer ${token}` 
                 },

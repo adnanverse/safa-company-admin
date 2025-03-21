@@ -16,7 +16,7 @@ export default function AddSubSubCategory() {
     let formhandler = (event) => {
         event.preventDefault();
         if (params.id != null) {
-            axios.put(`http://localhost:5556/api/admin/sub-sub-categories/update/${params.id}`, event.target, {
+            axios.put(`https://safa-company-api.onrender.com/api/admin/sub-sub-categories/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -35,7 +35,7 @@ export default function AddSubSubCategory() {
                     toast.error('something went wrong')
                 })
         } else {
-            axios.post('http://localhost:5556/api/admin/sub-sub-categories/add', event.target, {
+            axios.post('https://safa-company-api.onrender.com/api/admin/sub-sub-categories/add', event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -58,7 +58,7 @@ export default function AddSubSubCategory() {
 
     
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/categories', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/categories', {
             page: 1,
             limit: 200,
             status: true
@@ -78,7 +78,7 @@ export default function AddSubSubCategory() {
 
     
     useEffect(() => {
-        axios.post(`http://localhost:5556/api/admin/sub-sub-categories/detail/${params.id}`, '', {
+        axios.post(`https://safa-company-api.onrender.com/api/admin/sub-sub-categories/detail/${params.id}`, '', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -93,8 +93,7 @@ export default function AddSubSubCategory() {
     }, [render])
    
    let getcategoryid = (event)=>{
-    console.log(event.target.value)
-    axios.post('http://localhost:5556/api/admin/sub-categories', {
+    axios.post('https://safa-company-api.onrender.com/api/admin/sub-categories', {
         status:true,
         root_id:event.target.value
        },{
@@ -202,22 +201,7 @@ export default function AddSubSubCategory() {
                                     }>No</option>
 
                                 </select>
-                                {/* <div className='flex gap-3' >
-                            <div>
-                                <label htmlFor="" className='text-md font-medium text-gray-900 pr-2'> YES</label>
-                                <input type="radio" name='featured_categories' value='Yes' 
-                                // checked={ (details.featured_categories == "Yes") ? true : false}
-                                 />
-                                
-                            </div>
-                            <div>
-                                <label htmlFor="" className='text-md font-medium text-gray-900 pr-2'> NO</label>
-                                <input type="radio" name='featured_categories' value='No' 
-                                // checked={ (details.featured_categories == "No")? true : false} 
-                                />
-                                
-                            </div>
-                        </div> */}
+                               
                             </div>
 
                             <div class="mb-5">

@@ -29,7 +29,7 @@ export default function ViewColor() {
 
 
     let clear = (id) => {
-        axios.delete(`http://localhost:5556/api/admin/color/delete/${id}`, '', {
+        axios.delete(`https://safa-company-api.onrender.com/api/admin/color/delete/${id}`, '', {
             headers: {
                 Authorization: `Bearer ${token}`
             },
@@ -50,7 +50,7 @@ export default function ViewColor() {
 
 
     useEffect(() => {
-        axios.post(`http://localhost:5556/api/admin/color`, {
+        axios.post(`https://safa-company-api.onrender.com/api/admin/color`, {
             page: currentPage,
             limit: 6
         }, {
@@ -75,7 +75,7 @@ export default function ViewColor() {
 
     let deleteall = () => {
         if (confirm('are you sure you want to delete')) {
-            axios.post('http://localhost:5556/api/admin/color/delete', {
+            axios.post('https://safa-company-api.onrender.com/api/admin/color/delete', {
                 id: checkedvalue
             }, {
                 headers: {
@@ -100,7 +100,7 @@ export default function ViewColor() {
 
     let singlecheckbox = (event) => {
         if (event.target.checked == true) {
-            console.log(event.target.checked)
+           
             checkedvalue.push(event.target.id)
             setrender(!render)
             setcheckedvalue(checkedvalue)
@@ -113,12 +113,12 @@ export default function ViewColor() {
             setcheckedvalue(data)
         }
 
-        console.log(checkedvalue)
+        
     }
 
 
     let changeStatus = () => {
-        axios.post('http://localhost:5556/api/admin/color/change-status', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/color/change-status', {
             id: checkedvalue
         }, {
             headers: {
@@ -144,63 +144,7 @@ export default function ViewColor() {
         <>
 
             <section class="w-full">
-                <div id="order-modal" class=" hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                    <div class="fixed w-full h-screen bg-[rgba(0,0,0,0.8)]" >
-                        <div class="relative p-4 px-20 w-full max-w-full max-h-full">
-                            <div class="relative bg-white rounded-lg shadow">
-                                <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-                                    <h3 class="text-xl font-semibold text-gray-900">Product Image's &amp; Price</h3>
-                                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="order-modal">
-                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"></path>
-                                        </svg>
-                                        <span class="sr-only">Close modal</span>
-                                    </button>
-                                </div>
-                                <div class="p-4 md:p-5 space-y-4">
-                                    <div class="grid grid-cols-[22%_45%_27%] gap-10">
-                                        <div class="border-2 rounded-md shadow-md p-4">
-                                            <img src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13278488/2021/2/11/902af913-69be-4024-b22c-cd573b7dd13b1613028902744-Roadster-Men-Tshirts-9521613028900435-1.jpg" alt="" />
-                                        </div>
-                                        <div class="flex items-start flex-wrap gap-5 border-2 rounded-md shadow-md p-3">
-                                            <img
-                                                class="w-36"
-                                                src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13278488/2021/2/11/7f8383cc-07f5-4714-b451-fba7d49776921613028902727-Roadster-Men-Tshirts-9521613028900435-2.jpg"
-                                                alt=""
-                                            />
-                                            <img
-                                                class="w-36"
-                                                src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13278488/2021/2/11/5d8249b2-cbfa-42a3-9b8a-9406fcb8af0c1613028902710-Roadster-Men-Tshirts-9521613028900435-3.jpg"
-                                                alt=""
-                                            />
-                                            <img
-                                                class="w-36"
-                                                src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13278488/2021/2/11/bf9e30b3-5b8e-4cf1-811b-81ea64d45ed81613028902692-Roadster-Men-Tshirts-9521613028900435-4.jpg"
-                                                alt=""
-                                            />
-                                            <img
-                                                class="w-36"
-                                                src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/13278488/2021/2/11/77451543-64cb-4294-8f82-24ac1d78dcf01613028902666-Roadster-Men-Tshirts-9521613028900435-5.jpg"
-                                                alt=""
-                                            />
-                                        </div>
-                                        <div class="border-2 rounded-md shadow-md p-3">
-                                            <h3 class="text-center font-semibold text-[20px]">Product Details</h3>
-                                            <ul class="space-y-4 mt-8">
-                                                <li class="font-semibold text-[17px]">Price : <span class="font-normal text-[16px]">&nbsp; ₹ 1500</span></li>
-                                                <li class="font-semibold text-[17px]">MRP : <span class="font-normal text-[16px]">&nbsp; ₹ 3000</span></li>
-                                                <li class="font-semibold text-[17px]">Manage Stock : <span class="font-normal text-[16px]">&nbsp; In Stock</span></li>
-                                                <li class="font-semibold text-[17px]">Brand Name: <span class="font-normal text-[16px]">&nbsp; Lev's</span></li>
-                                                <li class="font-semibold text-[17px]">Size : <span class="font-normal text-[16px]">&nbsp; Xl </span></li>
-                                                <li class="font-semibold text-[17px]">Color : <span class="font-normal text-[16px]">&nbsp; Red </span></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
                 <nav class="flex border-b-2" aria-label="Breadcrumb">
                     <ol class="p-3 px-6 inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
                         <li class="inline-flex items-center"><a href="#" class="inline-flex items-center text-md font-medium text-gray-700 hover:text-blue-600">Home</a></li>

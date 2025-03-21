@@ -25,9 +25,8 @@ export default function AddProduct() {
     let [material, setMaterial] = useState([])
     let navigation = useNavigate();
 
-    //PRODUCT GALLERY IMAGE DELETE API -----------------------------------------------------------------------------------------------
     let DeleteImage = (id) => {
-        axios.post('http://localhost:5556/api/admin/products/delete-images', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/products/delete-images', {
             id: id
         }, {
             headers: {
@@ -51,9 +50,8 @@ export default function AddProduct() {
     }
 
 
-    // FUNCTION FOR SET SUB CATEGORY ACCORDING TO MAIN CATEGORY ---------------------------------------------------------------------------------->>>>>>>
     let GetSubCategory = (event) => {
-        axios.post('http://localhost:5556/api/admin/sub-categories', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/sub-categories', {
             //   page:currentPage,
             limit: 200,
             root_id: (event != '') ? event.target.value : productdetails.category_id
@@ -77,11 +75,10 @@ export default function AddProduct() {
             })
     }
 
-    // FUNCTION FOR SET SUB SUB CATEGORY ACCORDING TO SUB CATEGORY ---------------------------------------------------------------------------------->>>>>>>
     let GetSubSubCategory = (event) => {
 
 
-        axios.post('http://localhost:5556/api/admin/sub-sub-categories', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/sub-sub-categories', {
             //   page:currentPage,
             limit: 200,
             sub_category: (event != '') ? event.target.value : productdetails.sub_category_id
@@ -104,12 +101,11 @@ export default function AddProduct() {
     }
 
 
-    //PRODUCT DETAILS API ----------------------------------------------------------------------------->>>>>>
-
+   
     useEffect(() => {
         if (params.id != undefined) {
 
-            axios.post(`http://localhost:5556/api/admin/products/detail/${params.id}`, '',
+            axios.post(`https://safa-company-api.onrender.com/api/admin/products/detail/${params.id}`, '',
                 {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -119,7 +115,7 @@ export default function AddProduct() {
                     if(response.data.tokenstatus!=false){
                     setproductdetails(response.data.data)
                     setproductBaseUrl(response.data.base_url)
-                    console.log(response.data.data)
+                  
                     setselectedsizes(
                         (response.data.data.size_ids.length > 0)
                             ?
@@ -152,7 +148,7 @@ export default function AddProduct() {
                     toast.error('Something went wrong')
                 })
 
-            axios.post(`http://localhost:5556/api/admin/products/product-images`, {
+            axios.post(`https://safa-company-api.onrender.com/api/admin/products/product-images`, {
                 product_id: params.id
             },
                 {
@@ -187,7 +183,7 @@ export default function AddProduct() {
 
 
 
-    // READ IMAGE FROM INPUT TYPE FILE ------------------------>>>>>>>>>>>>>
+
     const handleImageChange = (event) => {
 
 
@@ -214,30 +210,30 @@ export default function AddProduct() {
         }
 
         if (event.target.id == 'images') {
-            const files = Array.from(event.target.files); // Convert FileList to array
-            const imagesArray = []; // Store base64 images
+            const files = Array.from(event.target.files); 
+            const imagesArray = [];
 
             files.map((file, index) => {
                 const reader = new FileReader();
                 reader.onloadend = () => {
                     imagesArray.push(reader.result);
 
-                    // When all files are processed, update the state
+                 
                     if (imagesArray.length === files.length) {
                         setSelectedMultipleImages(imagesArray);
-                        console.log(imagesArray);
+                       
                     }
                 };
-                reader.readAsDataURL(file); // Read each file
+                reader.readAsDataURL(file);
             });
         }
 
     };
 
 
-    //MATERIAL API ------------------------------------------------------------>>>>>
+   
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/material', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/material', {
             status: true,
             limit: 200
         }, {
@@ -258,9 +254,9 @@ export default function AddProduct() {
     }, [])
 
 
-    //SIZE API ------------------------------------------------>>>>
+    
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/size', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/size', {
             status: true
         }, {
             headers: {
@@ -280,9 +276,9 @@ export default function AddProduct() {
             })
     }, [])
 
-    //API FOR COLOR ------------------------------------------------------------------------------->>>>
+   
     useEffect(() => {
-        axios.post(`http://localhost:5556/api/admin/color`, {
+        axios.post(`https://safa-company-api.onrender.com/api/admin/color`, {
             status: true,
             limit:200
         }, {
@@ -302,7 +298,7 @@ export default function AddProduct() {
             })
     }, [])
 
-    //CODE FOR SELECT MULTIPLE SIZE VALUE IN  SELECT INPUT BOX-------------------------->>>>>>>>>>>>>>>> 
+   
     let Colors = [];
     color.map((v, i) => {
         let obj = {
@@ -314,7 +310,7 @@ export default function AddProduct() {
     let colorhandle = (event) => {
         setselectedcolors(event)
     }
-    //CODE FOR SELECT MULTIPLE SIZE VALUE IN  SELECT INPUT BOX-------------------------->>>>>>>>>>>>>>>> 
+  
     let Sizes = []
     size.map((v, i) => {
         let obj = {
@@ -326,17 +322,17 @@ export default function AddProduct() {
 
     let sizehandle = (event) => {
         setselectedsizes(event)
-        console.log(selectedsizes)
+        
     }
 
-    //SUBMIT FORM ADD PRODUCT AND UPDATE PRODUCT ----------------------------------------------->>>>>>>
+   
     let formHandle = (event) => {
         event.preventDefault();
 
 
 
         if (params.id != null) {
-            axios.put(`http://localhost:5556/api/admin/products/update/${params.id}`, event.target, {
+            axios.put(`https://safa-company-api.onrender.com/api/admin/products/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 },
@@ -355,7 +351,7 @@ export default function AddProduct() {
                 })
         } else {
 
-            axios.post(`http://localhost:5556/api/admin/products/add`,event.target,{
+            axios.post(`https://safa-company-api.onrender.com/api/admin/products/add`,event.target,{
                     headers: {
                         Authorization: `Bearer ${token}`
                     },
@@ -384,9 +380,9 @@ export default function AddProduct() {
 
     }
 
-    //CATEGORY API ---------------------------------------------------------------------------->>>>
+   
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/categories', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/categories', {
             page: 1,
             limit: 200,
             status: true
@@ -402,7 +398,7 @@ export default function AddProduct() {
                 navigation('/')
             }
         }).catch((error) => {
-            console.log('something went wrong')
+           toast.error('something went wrong')
         })
     }, [])
 
@@ -585,7 +581,6 @@ export default function AddProduct() {
                                             type="file"
                                             name="image"
                                             id="image"
-                                            // only accept images  ----------------------------------------------->>>>
                                             accept='image/*'
                                             class="block w-full border border-gray-200 shadow-sm rounded-lg text-sm focus:z-10 focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-50 file:border-0 file:me-4 file:py-3 file:px-4"
                                         />
@@ -620,41 +615,7 @@ export default function AddProduct() {
                                 </div>
 
                             </div>
-                            {/* {
-                                (params != null)
-                                    ?
-                                    <div className='mb-3 flex gap-2 flex-wrap '>
-                                       
-                                        {
-                                            imagescount.map((v,i)=>{
-                                                return(
-                                                    <div class="flex basis-[30%] items-center justify-center w-full">
-                                                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                                            </svg>
-                                                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
-                                                            <p class="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
-                                                        </div>
-                                                        <input id="dropzone-file" onChange={handleImageChange} type="file" class="hidden" />
-                                                    </label>
-                                                </div>
-                                                )
-                                            })
-                                        }
-                                        
-                                        <div className='basis-[100%]'>
-                                            <button className='border'>
-                                                add image
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                    :
-                                    ''
-
-                            } */}
+                           
                             <div class="mb-5">
                                 <label for="base-input" class="block mb-5 text-md font-medium text-gray-900">Product Gallery</label>
                                 <div class="max-w-full">

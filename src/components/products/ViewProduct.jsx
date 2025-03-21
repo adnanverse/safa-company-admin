@@ -29,7 +29,7 @@ export default function ViewProduct() {
 
 
   let GetProductId = (id) => {
-    axios.post(`http://localhost:5556/api/admin/products/detail/${id}`, '',
+    axios.post(`https://safa-company-api.onrender.com/api/admin/products/detail/${id}`, '',
       {
         headers: {
           Authorization: `Bearer ${token}`
@@ -46,9 +46,8 @@ export default function ViewProduct() {
         toast.error('something went wrong')
       })
 
-    // PRODUCT IMAGES API ---------------------------------------------------------------------------->>>>>>>>>>>>>
-
-    axios.post(`http://localhost:5556/api/admin/products/product-images`, {
+    
+    axios.post(`https://safa-company-api.onrender.com/api/admin/products/product-images`, {
       product_id: id
     },
       {
@@ -57,7 +56,6 @@ export default function ViewProduct() {
         },
 
       }).then((response) => {
-        console.log(response.data.data)
         setproductImages(response.data.data)
       })
       .catch((error) => {
@@ -68,9 +66,8 @@ export default function ViewProduct() {
   }
 
   let GetCategoryid = (event) => {
-    //----SUB CATEGORY API ------------------------------------------------------------->>>>>>>>>>>>>>>
-    axios.post('http://localhost:5556/api/admin/sub-categories', {
-      //   page:currentPage,
+    axios.post('https://safa-company-api.onrender.com/api/admin/sub-categories', {
+      
       limit: 200,
       root_id: event.target.value
     },{
@@ -92,8 +89,8 @@ export default function ViewProduct() {
       })
   }
 let GetSubCategoryid=(event)=>{
-  axios.post('http://localhost:5556/api/admin/sub-sub-categories', {
-    //   page:currentPage,
+  axios.post('https://safa-company-api.onrender.com/api/admin/sub-sub-categories', {
+    
     limit: 200,
     sub_category: event.target.value
 }, {
@@ -114,9 +111,8 @@ let GetSubCategoryid=(event)=>{
     })
 }
 
-  //----PRODUCTS API ------------------------------------------------------->>>>>>>>>>>
-  useEffect(() => {
-    axios.post('http://localhost:5556/api/admin/products',
+   useEffect(() => {
+    axios.post('https://safa-company-api.onrender.com/api/admin/products',
       {
         page: currentPage,
         limit: 5
@@ -141,10 +137,9 @@ let GetSubCategoryid=(event)=>{
       })
   }, [currentPage,render])
 
-  //----FILTER APPLY ON PRODUCTS-------------------------------------------------------->>>>>>>>>>>>>>>
-  let FilterApply = (event) => {
+ let FilterApply = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:5556/api/admin/products', event.target, {
+    axios.post('https://safa-company-api.onrender.com/api/admin/products', event.target, {
       headers: {
         Authorization: `Bearer ${token}`
       },
@@ -163,7 +158,7 @@ let GetSubCategoryid=(event)=>{
       })
   }
 
-  // SINGLE CHECKBOX CHECK ----------------------------------------------->>>>>>>>>>>>>>>>>
+  
   let SingleCheck = (event) => {
     if (event.target.checked == true) {
       checkedvalue.push(event.target.id)
@@ -181,7 +176,6 @@ let GetSubCategoryid=(event)=>{
     }
   }
 
-  //---- SELECT ALL --------------------------------------------------------------->>>>
   let SelectAll = (event) => {
     if (event.target.checked == true) {
       let data = [];
@@ -194,11 +188,10 @@ let GetSubCategoryid=(event)=>{
     }
   }
 
-  //---DELETE PRODUCT ----------------------------------------------------->>>>>>>>>>>>>
-  let DeleteAll = () => {
+   let DeleteAll = () => {
     if (checkedvalue.length > 0) {
       if (confirm('are u sure to delete items')) {
-        axios.post('http://localhost:5556/api/admin/products/delete', toFormData({
+        axios.post('https://safa-company-api.onrender.com/api/admin/products/delete', toFormData({
           id: checkedvalue,
         }), {
           headers: {
@@ -222,9 +215,8 @@ let GetSubCategoryid=(event)=>{
     }
   }
 
-  //MATERIAL API ------------------------------------------------------------>>>>>
   useEffect(() => {
-    axios.post('http://localhost:5556/api/admin/material', {
+    axios.post('https://safa-company-api.onrender.com/api/admin/material', {
         status: true,
         limit: 200
     }, {
@@ -244,9 +236,8 @@ let GetSubCategoryid=(event)=>{
     })
 }, [])
 
-  //--STATUS CHANGE API ------------------------------------------------->>>>>>>>>>
-  let ChangeStatus = () => {
-    axios.post('http://localhost:5556/api/admin/products/change-status', toFormData({
+ let ChangeStatus = () => {
+    axios.post('https://safa-company-api.onrender.com/api/admin/products/change-status', toFormData({
       id: checkedvalue,
     }), {
       headers: {
@@ -267,9 +258,8 @@ let GetSubCategoryid=(event)=>{
       })
   }
 
-  //----PARENT CATEGORY API --------------------------------------------------------->>>>>>>>>>>>>>>>
   useEffect(() => {
-    axios.post('http://localhost:5556/api/admin/categories', {
+    axios.post('https://safa-company-api.onrender.com/api/admin/categories', {
       page: 1,
       limit: 200,
       status: true
@@ -292,9 +282,8 @@ let GetSubCategoryid=(event)=>{
 
 
 
-  //----SIZE API ---------------------------------------------------------------------->>>>>>>>>>>>>>
   useEffect(() => {
-    axios.post('http://localhost:5556/api/admin/size', {
+    axios.post('https://safa-company-api.onrender.com/api/admin/size', {
       status: true
     }, {
       headers: {
@@ -315,9 +304,8 @@ let GetSubCategoryid=(event)=>{
       })
   }, [])
 
-  //----COLOR API ----------------------------------------------------------------------->>>>>>>>>>>>>
   useEffect(() => {
-    axios.post(`http://localhost:5556/api/admin/color`, {
+    axios.post(`https://safa-company-api.onrender.com/api/admin/color`, {
       status: true,
       limit:200
     }, {
@@ -508,7 +496,7 @@ let GetSubCategoryid=(event)=>{
                   Clear All
                 </button>
                 <button
-                  // onClick={FilterApply}
+                 
                   type='submit'
                   class="focus:outline-none  text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
                 >
@@ -617,9 +605,7 @@ let GetSubCategoryid=(event)=>{
                               <td class="px-6 py-4">{v.order}</td>
                               <td class="px-6 py-4">{(v.status == true) ? 'Active' : 'Inactive'}</td>
                               <td class="px-6 py-4 flex gap-3 mt-6">
-                                {/* <svg fill="red" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                <path d="M170.5 51.6L151.5 80l145 0-19-28.4c-1.5-2.2-4-3.6-6.7-3.6l-93.7 0c-2.7 0-5.2 1.3-6.7 3.6zm147-26.6L354.2 80 368 80l48 0 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-8 0 0 304c0 44.2-35.8 80-80 80l-224 0c-44.2 0-80-35.8-80-80l0-304-8 0c-13.3 0-24-10.7-24-24S10.7 80 24 80l8 0 48 0 13.8 0 36.7-55.1C140.9 9.4 158.4 0 177.1 0l93.7 0c18.7 0 36.2 9.4 46.6 24.9zM80 128l0 304c0 17.7 14.3 32 32 32l224 0c17.7 0 32-14.3 32-32l0-304L80 128zm80 64l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208c0-8.8 7.2-16 16-16s16 7.2 16 16zm80 0l0 208c0 8.8-7.2 16-16 16s-16-7.2-16-16l0-208c0-8.8 7.2-16 16-16s16 7.2 16 16z"></path>
-                              </svg> | */}
+                             
                                 <TbListDetails onClick={() => GetProductId(v._id)} />
                                 <Link to={`/product/update/${v._id}`}>
                                   <svg fill="gold" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">

@@ -9,7 +9,7 @@ export default function Login() {
   let navigation = useNavigate();
   let formhandle = (event) => {
     event.preventDefault();
-    axios.post('http://localhost:5556/api/admin/login', event.target)
+    axios.post('https://safa-company-api.onrender.com/api/admin/login', event.target)
       .then((response) => {
         if(response.data.status==true){
           localStorage.setItem('token', response.data.token)
@@ -30,6 +30,7 @@ export default function Login() {
 
   return (
     < >
+      
       <div className=' absolute translate-x-[50%] right-[50%] bottom-[50%] translate-y-[50%]'>
         <h1 className='text-[30px] text-center font-bold py-4'>
          Safa Company

@@ -15,7 +15,7 @@ export default function ViewSubSubCategory() {
     let navigation = useNavigate();
 
     useEffect(() => {
-        axios.post('http://localhost:5556/api/admin/sub-sub-categories', {
+        axios.post('https://safa-company-api.onrender.com/api/admin/sub-sub-categories', {
             page: currentPage,
             limit: 10
         }, {
@@ -74,7 +74,7 @@ export default function ViewSubSubCategory() {
     let deleteall = () => {
         if (checkedvalue.length > 0) {
             if (confirm('are u sure to delete items')) {
-                axios.post('http://localhost:5556/api/admin/sub-sub-categories/delete', toFormData({
+                axios.post('https://safa-company-api.onrender.com/api/admin/sub-sub-categories/delete', toFormData({
                     id: checkedvalue,
                 }), {
                     headers: {
@@ -97,9 +97,9 @@ export default function ViewSubSubCategory() {
         }
     }
 
-    //for status change------------------------------------------------->>>>>>>>>>
+   
     let changeStatus = () => {
-        axios.post('http://localhost:5556/api/admin/sub-sub-categories/change-status', toFormData({
+        axios.post('https://safa-company-api.onrender.com/api/admin/sub-sub-categories/change-status', toFormData({
             id: checkedvalue,
         }), {
             headers: {
