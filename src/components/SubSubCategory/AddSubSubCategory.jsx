@@ -15,7 +15,7 @@ export default function AddSubSubCategory() {
 
     let formhandler = (event) => {
         event.preventDefault();
-        if (params.id != null) {
+        if (params.id != undefined) {
             axios.put(`https://safa-company-api.onrender.com/api/admin/sub-sub-categories/update/${params.id}`, event.target, {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -78,6 +78,9 @@ export default function AddSubSubCategory() {
 
     
     useEffect(() => {
+        if(params.id != undefined){
+
+        
         axios.post(`https://safa-company-api.onrender.com/api/admin/sub-sub-categories/detail/${params.id}`, '', {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -87,15 +90,26 @@ export default function AddSubSubCategory() {
             .then((response) => {
                 setdetails(response.data.data)
                 setimageurl(response.data.base_url)
+                getcategoryid(response.data.data.root_id); // safe now!
             }).catch(() => {
                 alert('something went wrong !!!')
             })
-    }, [render])
+        }else{
+            setdetails('')
+        }
+    }, [params,render])
    
-   let getcategoryid = (event)=>{
+   let getcategoryid = (input)=>{
+    let root_id = '';
+
+    if (typeof input === 'object' && input?.target?.value) {
+        root_id = input.target.value;
+    } else {
+        root_id = input || details.root_id;
+    }
     axios.post('https://safa-company-api.onrender.com/api/admin/sub-categories', {
         status:true,
-        root_id:event.target.value
+        root_id:root_id
        },{
          headers : {
            Authorization: `Bearer ${token}`  
@@ -164,7 +178,7 @@ export default function AddSubSubCategory() {
                                         subcategory.map((v) => {
                                             return (
                                                 <option value={v._id} selected={
-                                                    (v._id == details.root_id) ?
+                                                    (v._id == details.sub_category) ?
                                                         'selected'
                                                         :
                                                         ''

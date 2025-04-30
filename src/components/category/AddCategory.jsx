@@ -26,9 +26,11 @@ export default function AddCategory() {
             }).catch((error)=>{
                 alert('something went wrong')
             })
+        }else{
+            setCatDetails({})
         }
         
-    },[])
+    },[params])
     let formhandler = (event)=>{
     
         event.preventDefault()
